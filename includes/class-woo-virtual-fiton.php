@@ -227,9 +227,9 @@ class Woo_Virtual_Fiton {
 		$this->loader->add_action( 'woocommerce_before_shop_loop', $plugin_public, 'woocom_shop_page' );
 		$this->loader->add_action( 'woocommerce_after_shop_loop_item', $plugin_public, 'woocom_shop_loop' );
 
-		$this->loader->add_shortcode( 'woo_vfiton_product_page', $plugin_public, 'woocom_product_page' );
-		$this->loader->add_shortcode( 'woo_vfiton_shop_page', $plugin_public, 'woocom_shop_page' );
-		$this->loader->add_shortcode( 'woo_vfiton_shop_loop', $plugin_public, 'woocom_shop_loop' );
+		$this->loader->add_shortcode( 'woo_vfiton_product_page', $plugin_public, 'woocom_product_page_shortcode' );
+		$this->loader->add_shortcode( 'woo_vfiton_shop_page', $plugin_public, 'woocom_shop_page_shortcode' );
+		$this->loader->add_shortcode( 'woo_vfiton_shop_loop', $plugin_public, 'woocom_shop_loop_shortcode' );
 	}
 
 	/**

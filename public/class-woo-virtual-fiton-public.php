@@ -147,5 +147,26 @@ class Woo_Virtual_Fiton_Public {
 
 		include 'partials/woo-virtual-fiton-shop-loop.php';
 	}
+	
+	public function woocom_product_page_shortcode() {
+		ob_start();
+		$this->woocom_product_page();
+		$output = ob_get_clean();
+		return $output;
+	}
+
+	public function woocom_shop_page_shortcode() {
+		ob_start();
+		$this->woocom_shop_page();
+		$output = ob_get_clean();
+		return $output;
+	}
+	
+	public function woocom_shop_loop_shortcode() {
+		ob_start();
+		$this->woocom_shop_loop();
+		$output = ob_get_clean();
+		return $output;
+	}
 
 }
