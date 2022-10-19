@@ -19,6 +19,20 @@
 	var products_loop = plugin_config.products_loop;
 	var products_prepend = plugin_config.products_prepend;
 
+	// reference to the current media stream
+	var mediaStream = null;
+	var webcam_env = 'user';
+
+	// Prefer camera resolution nearest to 1280x720.
+	var constraints = { 
+		audio: false, 
+		video: { 
+			width: {ideal: 640}, 
+			height: {ideal: 640},
+			facingMode: "user"
+		} 
+	}; 
+
 	//global methods
 	function get_image_meta(url) {
 		return new Promise((resolve, reject) => {
@@ -38,17 +52,22 @@
 		if (!this.files || !this.files[0]) return;
 		const FR = new FileReader();
 		FR.addEventListener("load", function(evt) {
-			set_user_image(evt.target.result);
-			if (product_id) {
-				set_single_modal_fiton(false);
-			} else if (shop_page) {
-				set_shop_modal_fiton(false);
-			}
+			$('.' + plugin_name + '_container').removeClass('webcam-on');
+			set_new_user_image(evt.target.result)
 		}); 
 		FR.readAsDataURL(this.files[0]);
 	}
 
-	function set_user_image(img) {
+	function set_new_user_image(img) {
+		save_user_image(img);
+		if (product_id) {
+			set_single_modal_fiton(false);
+		} else if (shop_page) {
+			set_shop_modal_fiton(false);
+		}
+	}
+
+	function save_user_image(img) {
 		localStorage.setItem(plugin_name + '_user_img', img);
 	}
 
@@ -461,6 +480,72 @@
 		}
 	}
 
+	//webcam (https://codepen.io/ocinpp/pen/EpbXKz)
+	async function get_media_stream (constraints) {
+		try {
+		  mediaStream =  await navigator.mediaDevices.getUserMedia(constraints);
+		  let video = document.getElementById(plugin_name + '_camera');    
+		  video.srcObject = mediaStream;
+		  video.onloadedmetadata = (event) => {
+			video.play();
+		  };
+		} catch (err)  {    
+		  console.error(err.message);   
+		}
+	};
+	  
+	async function open_webcam () {  
+		try {
+		  $('.' + plugin_name + '_container').addClass('webcam-on');
+
+		  // stop the current video stream
+		  if (mediaStream != null && mediaStream.active) {
+			var tracks = mediaStream.getVideoTracks();
+			tracks.forEach(track => {
+			  track.stop();
+			})      
+		  }
+		  
+		  // set the video source to null
+		  document.getElementById(plugin_name + '_camera').srcObject = null;
+		  
+		  // change "facingMode"
+		  constraints.video.facingMode = webcam_env;
+		  
+		  // get new media stream
+		  await get_media_stream(constraints);
+		} catch (err)  {    
+		  console.error(err.message); 
+		  alert(err.message);
+		}
+	}
+
+	function toggle_webcam () {
+		if (webcam_env == 'user') webcam_env = 'environment';
+		else webcam_env = 'user';
+		open_webcam();
+	}
+
+	function capture_webcam () {
+		let canvas = document.getElementById(plugin_name + '_canvas');
+		let video = document.getElementById(plugin_name + '_camera');
+		let context = canvas.getContext('2d');
+		
+		const height = video.videoHeight;
+		const width = video.videoWidth;
+		if (width && height) {    
+		  canvas.width = width;
+		  canvas.height = height;
+		  context.drawImage(video, 0, 0, width, height);    
+		  var data = canvas.toDataURL('image/png');
+		  $('.' + plugin_name + '_container').removeClass('webcam-on');
+		  set_fiton_position(product_id);
+		  set_new_user_image(data);
+		} else {
+		  alert('capture failed. please try again');
+		}
+	}
+
 	$( window ).load(function() {
 		//read selected image file (with no upload to server)
 		document.querySelector('#' + plugin_name + '_user_image').addEventListener("change", handle_user_image_upload);
@@ -516,12 +601,12 @@
 		});
 
 		//fiton edit btn
-		$('#' + plugin_name + '_edit_btn').click( function() {
+		$('.' + plugin_name + '_container #' + plugin_name + '_edit_btn').click( function() {
 			toggle_single_fiton_edit();
 		});
 
 		//upload btn -> trigger file upload
-		$('#' + plugin_name + '_upload_btn').click( function() {
+		$('.' + plugin_name + '_container #' + plugin_name + '_upload_btn').click( function() {
 			$('#' + plugin_name + '_user_image').click();
 		});
 
@@ -549,7 +634,38 @@
 				position_modal_fiton();
 			}
 		});
-	});
+
+		//webcam trigger
+		$('.' + plugin_name + '_container #' + plugin_name + '_webcam_btn').click( function() {
+			open_webcam();
+		});
+
+		//webcam switch camera
+		$('.' + plugin_name + '_container #' + plugin_name + '_webcam_switch_btn').click( function() {
+			toggle_webcam();
+		});
+
+		//webcam switch camera
+		$('.' + plugin_name + '_container #' + plugin_name + '_webcam_shoot_btn').click( function() {
+			capture_webcam();
+		});
+
+		//webcam
+		/*document.getElementById('switchFrontBtn').onclick = (event) => {
+		switchCamera("user");
+		}
+		
+		document.getElementById('switchBackBtn').onclick = (event) => {  
+		switchCamera("environment");
+		}
+		
+		document.getElementById('snapBtn').onclick = (event) => {  
+		takePicture();
+		event.preventDefault();
+		}
+		
+		clearPhoto();*/
+});
 
 	//Depricated Methods
 	//hide fiton when user navigate to other single producgt images

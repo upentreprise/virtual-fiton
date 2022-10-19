@@ -12,8 +12,21 @@
   z-index: 9;
 }
 
-.woo-virtual-fiton_container input[type='file'] {
+.woo-virtual-fiton_container input[type='file'], 
+.woo-virtual-fiton_container canvas,
+.woo-virtual-fiton_container .webcam-block,
+.woo-virtual-fiton_container.webcam-on .preview-image {
   display: none;
+}
+
+.woo-virtual-fiton_container video {
+  display: none;
+  width: 100%;
+}
+
+.woo-virtual-fiton_container.webcam-on video,
+.woo-virtual-fiton_container.webcam-on .webcam-block{
+  display: block;
 }
 
 /*.woo-virtual-fiton_container input[type='file'] {

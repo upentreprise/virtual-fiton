@@ -19,7 +19,9 @@
   <div class="row">
 
       <div class="column image-block">
-        <img id="<?=$this->plugin_name?>_preview_image" src="<?=$this->plugin_config['user_image'];?>">
+        <video id="<?=$this->plugin_name?>_camera" autoplay muted playsinline><?=__( 'Webcam not available', $this->plugin_name )?></video>
+        <canvas id="<?=$this->plugin_name?>_canvas"></canvas>  
+        <img id="<?=$this->plugin_name?>_preview_image" class="preview-image" src="<?=$this->plugin_config['user_image'];?>">
       </div>
 
       <div class="column upload-block">
@@ -29,6 +31,13 @@
         <button type="button" id="<?=$this->plugin_name?>_upload_btn"><span class="dashicons dashicons-upload"></span><span class="caption"><?=__( 'Prendre une photo', $this->plugin_name )?></span></button>
         <input type="file" id="<?=$this->plugin_name?>_user_image" accept="image/*">
         <br><br>
+
+        <div class="webcam-block">
+          <div class="column-sub-title"><?=__( 'Capture', $this->plugin_name )?></div>
+          <button id="<?=$this->plugin_name?>_webcam_switch_btn"><span class="dashicons dashicons-update"></span><?=__( 'Switch camera', $this->plugin_name )?></button>
+          <button id="<?=$this->plugin_name?>_webcam_shoot_btn"><span class="dashicons dashicons-camera"></span><?=__( 'Capture', $this->plugin_name )?></button>
+          <br><br>
+        </div>
 
         <div class="controls-block">
           <div class="column-sub-title"><?=__( 'Votre essayage', $this->plugin_name )?></div>
