@@ -22,18 +22,60 @@
     <?php settings_fields( $this->plugin_name ); ?>
     <?php do_settings_sections( $this->plugin_name ); ?>
     <table class="form-table">
-        <!--<tr valign="top">
-        <th scope="row">Single product mode</th>
+
+        <tr valign="top">
+        <th scope="row"><?=__( 'Shortcodes', $this->plugin_name )?></th>
         <td>
             <?php 
-            /*$options = [
-                'modal' => 'Modal FitOn',
-                'inpage' => 'Inpage FitOn'
-            ];
-            $this->show_setting_input('select', $this->plugin_name . '_single_product_mode', $this->plugin_name . '_single_product_mode', $options, esc_attr( get_option($this->plugin_name . '_single_product_mode') )); */
+            $this->show_setting_input('checkbox', $this->plugin_name . '_shortcodes_active', $this->plugin_name . '_shortcodes_active', [], $this->plugin_config['shortcodes_active']);
             ?>
         </td>
-        </tr>-->
+        </tr>
+
+        <tr valign="top">
+        <th scope="row"><?=__( 'Shop page integration', $this->plugin_name )?></th>
+        <td>
+            <?php 
+            $this->show_setting_input('checkbox', $this->plugin_name . '_shop_page_active', $this->plugin_name . '_shop_page_active', [], $this->plugin_config['shop_page_active']);
+            ?>
+        </td>
+        </tr>
+
+        <tr valign="top">
+        <th scope="row"><?=__( 'Shop loop integration', $this->plugin_name )?></th>
+        <td>
+            <?php 
+            $this->show_setting_input('checkbox', $this->plugin_name . '_shop_loop_active', $this->plugin_name . '_shop_loop_active', [], $this->plugin_config['shop_loop_active']);
+            ?>
+        </td>
+        </tr>
+
+        <tr valign="top">
+        <th scope="row"><?=__( 'Single product integration', $this->plugin_name )?></th>
+        <td>
+            <?php 
+            $this->show_setting_input('checkbox', $this->plugin_name . '_single_product_active', $this->plugin_name . '_single_product_active', [], $this->plugin_config['single_product_active']);
+            ?>
+        </td>
+        </tr>
+
+        <tr valign="top">
+        <th scope="row"><?=__( 'JS/CSS Caching', $this->plugin_name )?></th>
+        <td>
+            <?php 
+            $this->show_setting_input('checkbox', $this->plugin_name . '_caching_active', $this->plugin_name . '_caching_active', [], $this->plugin_config['caching_active']);
+            ?>
+        </td>
+        </tr>
+
+        <tr valign="top">
+        <th scope="row"><?=__( 'Disable single product zoom effect', $this->plugin_name )?></th>
+        <td>
+            <?php 
+            $this->show_setting_input('checkbox', $this->plugin_name . '_disable_single_zoom', $this->plugin_name . '_disable_single_zoom', [], $this->plugin_config['disable_single_zoom']);
+            ?>
+        </td>
+        </tr>
 
         <tr valign="top">
         <th scope="row"><?=__( 'Instructions', $this->plugin_name )?></th>
@@ -109,6 +151,15 @@
         <td>
             <?php 
             $this->show_setting_input('text', $this->plugin_name . '_products_prepend', $this->plugin_name . '_products_prepend', [], $this->plugin_config['products_prepend']); 
+            ?>
+        </td>
+        </tr>
+
+        <tr valign="top">
+        <th scope="row"><?=__( 'Push single placement after', $this->plugin_name )?></th>
+        <td>
+            <?php 
+            $this->show_setting_input('text', $this->plugin_name . '_push_single_placement_after', $this->plugin_name . '_push_single_placement_after', [], $this->plugin_config['push_single_placement_after']);
             ?>
         </td>
         </tr>

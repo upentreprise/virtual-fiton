@@ -19,26 +19,7 @@
 	var products_loop = plugin_config.products_loop;
 	var products_prepend = plugin_config.products_prepend;
 
-	//var single_pimg_selector = '.has-post-thumbnail .woocommerce-product-gallery__wrapper .woocommerce-product-gallery__image:not(.clone):first';
-	//var single_p_prepend = '.has-post-thumbnail .woocommerce-product-gallery';
-
-	//var products_loop = 'ul.fusion-grid li.product';
-	//var products_prepend = '.fusion-column-wrapper div:first';
-
 	//global methods
-
-	//catch class change on a selector
-	/*$.fn.classChange = function(cb) {
-		return $(this).each((_, el) => {
-			new MutationObserver(mutations => {
-			mutations.forEach(mutation => cb && cb(mutation.target, $(mutation.target).prop(mutation.attributeName)));
-			}).observe(el, {
-			attributes: true,
-			attributeFilter: ['class'] // only listen for class attribute changes 
-			});
-		});
-	}*/
-
 	function get_image_meta(url) {
 		return new Promise((resolve, reject) => {
 			let img = new Image();
@@ -259,8 +240,8 @@
 		});
 	}
 
-	//@TODO : not perfectly responsive
 	function position_modal_fiton(){
+		//@TODO : not perfectly responsive
 		user_image_dimentions = {width: $('#' + plugin_name + '_modal #' + plugin_name + '_preview_image').width(), height: $('.' + plugin_name + '_container #' + plugin_name + '_preview_image').height()};
 		let calculated_fiton_img_height = fiton_img_dimentions.height/(fiton_img_dimentions.width/user_image_dimentions.width);
 
@@ -492,7 +473,8 @@
 			//@TODO :below function does not return actual dimentions as drawn in client, so we will use the fallback values from plugin config
 			//product_image_dimentions = {width: $(single_pimg_selector + ' a img').width() + 'px', height: $(single_pimg_selector + ' a img').height() + 'px'};
 
-			//if (plugin_config.force_single_placement)$('.' + plugin_name + '_single_section_container').insertAfter('.fusion-woo-price-tb');
+			//forefully place element after single product price element
+			if (plugin_config.push_single_placement_after)$('.' + plugin_name + '_container').insertAfter(plugin_config.push_single_placement_after);
 
 			if (fiton_available(product_id)) set_single_fiton();
 		}
@@ -567,13 +549,26 @@
 				position_modal_fiton();
 			}
 		});
-
-		//hide fiton when user navigate to other single producgt images (no longer needed, keeping the code as its cool)
-		/*const $foo = $(".flex-control-nav li:first img").classChange((el, newClass) => woo_single_img_nav(newClass));
-		function woo_single_img_nav(newClass) {
-			if (newClass.indexOf("flex-active") >= 0) $('.' + plugin_name + '_fiton_product').fadeIn();
-			else $('.' + plugin_name + '_fiton_product').hide();
-		}*/
 	});
+
+	//Depricated Methods
+	//hide fiton when user navigate to other single producgt images
+	/*const $foo = $(".flex-control-nav li:first img").classChange((el, newClass) => woo_single_img_nav(newClass));
+	function woo_single_img_nav(newClass) {
+		if (newClass.indexOf("flex-active") >= 0) $('.' + plugin_name + '_fiton_product').fadeIn();
+		else $('.' + plugin_name + '_fiton_product').hide();
+	}*/
+
+	//catch class change on a selector
+	/*$.fn.classChange = function(cb) {
+		return $(this).each((_, el) => {
+			new MutationObserver(mutations => {
+			mutations.forEach(mutation => cb && cb(mutation.target, $(mutation.target).prop(mutation.attributeName)));
+			}).observe(el, {
+			attributes: true,
+			attributeFilter: ['class'] // only listen for class attribute changes 
+			});
+		});
+	}*/
 
 })( jQuery );

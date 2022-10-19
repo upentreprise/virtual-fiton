@@ -127,6 +127,14 @@ class Woo_Virtual_Fiton_Admin {
 		register_setting( $this->plugin_name, $this->plugin_name . '_user_image' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_fiton_image' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_instructions' );
+
+		register_setting( $this->plugin_name, $this->plugin_name . '_push_single_placement_after');
+		register_setting( $this->plugin_name, $this->plugin_name . '_shortcodes_active');
+		register_setting( $this->plugin_name, $this->plugin_name . '_shop_page_active' );
+		register_setting( $this->plugin_name, $this->plugin_name . '_shop_loop_active' );
+		register_setting( $this->plugin_name, $this->plugin_name . '_single_product_active' );
+		register_setting( $this->plugin_name, $this->plugin_name . '_caching_active' );
+		register_setting( $this->plugin_name, $this->plugin_name . '_disable_single_zoom' );
 	}
 
 	public function admin_page_view(){
@@ -148,7 +156,16 @@ class Woo_Virtual_Fiton_Admin {
 				}
 				$output .= '</select>';
 				break;
-			
+
+			case 'checkbox':
+				$output = '<input type="checkbox" name="' . $name . '" ';
+				if ($id) $output .= 'id="' . $id . '" ';
+				$output .= 'value="1" ';
+				if ($value && $value != false && $value != '' && $value != NULL) $output .= 'checked ';
+				$output .= '>';
+				//$output = $value;
+				break;
+
 			case 'textarea':
 				$output = '<textarea name="' . $name . '" rows="10" cols="100" ';
 				if ($id) $output .= 'id="' . $id . '" ';

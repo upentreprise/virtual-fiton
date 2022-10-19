@@ -76,8 +76,10 @@ class Woo_Virtual_Fiton_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+		$cache = '';
+		if ($this->plugin_config['caching_active']) $cache = '?v=1.' . rand(1,9999999);
 
-		wp_enqueue_style( $this->plugin_name . '_core', plugin_dir_url( __FILE__ ) . 'css/woo-virtual-fiton-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name . '_core', plugin_dir_url( __FILE__ ) . 'css/woo-virtual-fiton-public.css' . $cache, array(), $this->version, 'all' );
 
 		wp_enqueue_style( $this->plugin_name . '_freetrans', plugin_dir_url( __FILE__ ) . 'css/jquery.freetrans.css', array(), $this->version, 'all' );
 		
@@ -103,13 +105,15 @@ class Woo_Virtual_Fiton_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		$no_cache = rand(1,9999999);
+
+		$cache = '';
+		if ($this->plugin_config['caching_active']) $cache = '?v=1.' . rand(1,9999999);
 
 		wp_enqueue_script( $this->plugin_name . '_matrix', plugin_dir_url( __FILE__ ) . 'js/Matrix.js', array( 'jquery' ), $this->version, false );
 
 		wp_enqueue_script( $this->plugin_name . '_freetrans', plugin_dir_url( __FILE__ ) . 'js/jquery.freetrans.js', array( 'jquery' ), $this->version, false );
 
-		wp_enqueue_script( $this->plugin_name . '_core', plugin_dir_url( __FILE__ ) . 'js/woo-virtual-fiton-public.js?v=1.' . $no_cache, array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name . '_core', plugin_dir_url( __FILE__ ) . 'js/woo-virtual-fiton-public.js' . $cache, array( 'jquery' ), $this->version, false );
 		
 		wp_enqueue_script( $this->plugin_name . '_magnific', plugin_dir_url( __FILE__ ) . 'js/jquery.magnific-popup.js', array( 'jquery' ), $this->version, false );
 

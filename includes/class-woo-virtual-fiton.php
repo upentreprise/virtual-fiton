@@ -104,7 +104,14 @@ class Woo_Virtual_Fiton {
 			'products_prepend' => '.woocommerce-loop-product__link',
 			'user_image' => plugin_dir_url( dirname(__FILE__) ) . 'public/images/user_image.png',
 			'fiton_image' => plugin_dir_url( dirname(__FILE__) ) . 'public/images/fiton_image.png',
-			'instructions'	=> "Prenez une photo à l'aide de votre webcam ou de l'appareil photo de votre téléphone ou téléversez une photo que vous avez déjà.\nAssurez-vous que la photo que vous utilisez est une photo de face claire de vous avec suffisamment d'espace autour de la tête.\nLorsque vous voyez votre photo, repositionnez et redimensionnez le chapeau jusqu'à ce qu'il vous fasse bien.\nCliquez sur enregistrer pour conserver ce positionnement. À partir de ce moment, votre photo sera utilisée pour essayer tous les chapeaux sur ce site."
+			'instructions'	=> "Prenez une photo à l'aide de votre webcam ou de l'appareil photo de votre téléphone ou téléversez une photo que vous avez déjà.\nAssurez-vous que la photo que vous utilisez est une photo de face claire de vous avec suffisamment d'espace autour de la tête.\nLorsque vous voyez votre photo, repositionnez et redimensionnez le chapeau jusqu'à ce qu'il vous fasse bien.\nCliquez sur enregistrer pour conserver ce positionnement. À partir de ce moment, votre photo sera utilisée pour essayer tous les chapeaux sur ce site.",
+			'push_single_placement_after' => false,
+			'shortcodes_active' => true,
+			'shop_page_active' => true,
+			'shop_loop_active' => true,
+			'single_product_active' => true,
+			'caching_active' => true,
+			'disable_single_zoom' => true
 		];
 
 		$this->plugin_config = $this->get_plugin_config();
@@ -120,6 +127,8 @@ class Woo_Virtual_Fiton {
 		foreach ($this->plugin_default_config as $key => $value) {
 			if ($_value = esc_attr(get_option($this->plugin_name . '_' . $key))) $config[$key] = htmlspecialchars_decode(stripslashes($_value));
 			else $config[$key] = (isset($this->plugin_default_config[$key])) ? htmlspecialchars_decode(stripslashes($this->plugin_default_config[$key])) : null ;
+
+			if (get_option($this->plugin_name . '_' . $key) === '') $config[$key] = false;
 		}
 		return $config;
 	}
@@ -221,15 +230,20 @@ class Woo_Virtual_Fiton {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_filter( 'woocommerce_single_product_zoom_enabled', null, '__return_false' );
 
-		$this->loader->add_action( 'woocommerce_before_add_to_cart_form', $plugin_public, 'woocom_product_page' );
-		$this->loader->add_action( 'woocommerce_before_shop_loop', $plugin_public, 'woocom_shop_page' );
-		$this->loader->add_action( 'woocommerce_after_shop_loop_item', $plugin_public, 'woocom_shop_loop' );
+		if ($this->plugin_config['disable_single_zoom']) $this->loader->add_filter( 'woocommerce_single_product_zoom_enabled', null, '__return_false' );
 
-		$this->loader->add_shortcode( 'woo_vfiton_product_page', $plugin_public, 'woocom_product_page_shortcode' );
-		$this->loader->add_shortcode( 'woo_vfiton_shop_page', $plugin_public, 'woocom_shop_page_shortcode' );
-		$this->loader->add_shortcode( 'woo_vfiton_shop_loop', $plugin_public, 'woocom_shop_loop_shortcode' );
+		if ($this->plugin_config['single_product_active']) $this->loader->add_action( 'woocommerce_before_add_to_cart_form', $plugin_public, 'woocom_product_page' );
+
+		if ($this->plugin_config['shop_loop_active']) $this->loader->add_action( 'woocommerce_before_shop_loop', $plugin_public, 'woocom_shop_page' );
+
+		if ($this->plugin_config['shop_page_active']) $this->loader->add_action( 'woocommerce_after_shop_loop_item', $plugin_public, 'woocom_shop_loop' );
+
+		if ($this->plugin_config['shortcodes_active']) {
+			$this->loader->add_shortcode( 'woo_vfiton_product_page', $plugin_public, 'woocom_product_page_shortcode' );
+			$this->loader->add_shortcode( 'woo_vfiton_shop_page', $plugin_public, 'woocom_shop_page_shortcode' );
+			$this->loader->add_shortcode( 'woo_vfiton_shop_loop', $plugin_public, 'woocom_shop_loop_shortcode' );
+		}
 	}
 
 	/**
