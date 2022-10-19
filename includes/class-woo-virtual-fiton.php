@@ -217,19 +217,19 @@ class Woo_Virtual_Fiton {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-
 		$plugin_public = new Woo_Virtual_Fiton_Public( $this->get_plugin_name(), $this->get_version(), $this->plugin_public_name, $this->plugin_config  );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_filter( 'woocommerce_single_product_zoom_enabled', null, '__return_false' );
+
 		$this->loader->add_action( 'woocommerce_before_add_to_cart_form', $plugin_public, 'woocom_product_page' );
-		
-		//$this->loader->add_filter( 'woocommerce_get_price_html', $plugin_public, 'woocom_product_page' );
 		$this->loader->add_action( 'woocommerce_before_shop_loop', $plugin_public, 'woocom_shop_page' );
 		$this->loader->add_action( 'woocommerce_after_shop_loop_item', $plugin_public, 'woocom_shop_loop' );
-		
 
+		$this->loader->add_shortcode( 'woo_vfiton_product_page', $plugin_public, 'woocom_product_page' );
+		$this->loader->add_shortcode( 'woo_vfiton_shop_page', $plugin_public, 'woocom_shop_page' );
+		$this->loader->add_shortcode( 'woo_vfiton_shop_loop', $plugin_public, 'woocom_shop_loop' );
 	}
 
 	/**
