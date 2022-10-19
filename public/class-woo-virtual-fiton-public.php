@@ -79,6 +79,8 @@ class Woo_Virtual_Fiton_Public {
 		$cache = '';
 		if ($this->plugin_config['caching_active']) $cache = '?v=1.' . rand(1,9999999);
 
+		wp_enqueue_style( 'dashicons' );
+
 		wp_enqueue_style( $this->plugin_name . '_core', plugin_dir_url( __FILE__ ) . 'css/woo-virtual-fiton-public.css' . $cache, array(), $this->version, 'all' );
 
 		wp_enqueue_style( $this->plugin_name . '_freetrans', plugin_dir_url( __FILE__ ) . 'css/jquery.freetrans.css', array(), $this->version, 'all' );
