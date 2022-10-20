@@ -1,34 +1,25 @@
 (function( $ ) {
 	'use strict';
-
 	var plugin_name = plugin_data.plugin_name;
 	var plugin_config = plugin_data.plugin_config;
-
 	var product_id = false;
 	var shop_page = false;
 	var fiton_img_dimentions = false;
-
 	var global_position_key = '_global_pos';
-
 	var shop_image_dimentions = JSON.parse(plugin_config.shop_image_dimentions);
 	var product_image_dimentions = JSON.parse(plugin_config.product_image_dimentions);
 	var user_image_dimentions = JSON.parse(plugin_config.user_image_dimentions);
 	var fallback_position = JSON.parse(plugin_config.fallback_position);
-
 	var single_pimg_selector = plugin_config.single_pimg_selector;
 	var products_loop = plugin_config.products_loop;
 	var products_prepend = plugin_config.products_prepend;
-
-	// reference to the current media stream
 	var mediaStream = null;
 	var webcam_env = 'user';
-
-	// Prefer camera resolution nearest to 1280x720.
 	var constraints = { 
 		audio: false, 
 		video: { 
-			width: {ideal: 640}, 
-			height: {ideal: 640},
+			width: {ideal: 1024}, 
+			height: {ideal: 1024},
 			facingMode: "user"
 		} 
 	}; 
@@ -53,7 +44,7 @@
 		const FR = new FileReader();
 		FR.addEventListener("load", function(evt) {
 			$('.' + plugin_name + '_container').removeClass('webcam-on');
-			set_new_user_image(evt.target.result)
+			set_new_user_image(evt.target.result);
 		}); 
 		FR.readAsDataURL(this.files[0]);
 	}
@@ -497,6 +488,7 @@
 	async function open_webcam () {  
 		try {
 		  $('.' + plugin_name + '_container').addClass('webcam-on');
+		  $('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').freetrans('destroy').remove();
 
 		  // stop the current video stream
 		  if (mediaStream != null && mediaStream.active) {
@@ -539,8 +531,8 @@
 		  context.drawImage(video, 0, 0, width, height);    
 		  var data = canvas.toDataURL('image/png');
 		  $('.' + plugin_name + '_container').removeClass('webcam-on');
-		  set_fiton_position(product_id);
 		  set_new_user_image(data);
+		  mediaStream.getTracks().forEach(track => track.stop());
 		} else {
 		  alert('capture failed. please try again');
 		}
@@ -548,8 +540,10 @@
 
 	$( window ).load(function() {
 		//read selected image file (with no upload to server)
-		document.querySelector('#' + plugin_name + '_user_image').addEventListener("change", handle_user_image_upload);
-
+		if ($('#' + plugin_name + '_product_id').length || $('#' + plugin_name + '_shop').val() == 'true' || $('#' + plugin_name + '_shop').val() == '1') {
+			document.querySelector('#' + plugin_name + '_user_image').addEventListener("change", handle_user_image_upload);
+		}
+		
 		//auto fiton on single page
 		if ($('#' + plugin_name + '_product_id').length) {
 			product_id = $('#' + plugin_name + '_product_id').val();
@@ -622,19 +616,6 @@
 			midClick: true
 		});
 
-		//dynamically place the fiton as the window+user image resizes
-		$(window).on('resize', function(){
-			if ($('.' + plugin_name + '_fiton_product').length) {
-				if (shop_page) position_shop_fiton();
-				else position_single_fiton();
-			}
-
-			if ($('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').length) {
-				//@TO-DO - save current position (as user might have edited the position already)
-				position_modal_fiton();
-			}
-		});
-
 		//webcam trigger
 		$('.' + plugin_name + '_container #' + plugin_name + '_webcam_btn').click( function() {
 			open_webcam();
@@ -650,41 +631,19 @@
 			capture_webcam();
 		});
 
-		//webcam
-		/*document.getElementById('switchFrontBtn').onclick = (event) => {
-		switchCamera("user");
-		}
-		
-		document.getElementById('switchBackBtn').onclick = (event) => {  
-		switchCamera("environment");
-		}
-		
-		document.getElementById('snapBtn').onclick = (event) => {  
-		takePicture();
-		event.preventDefault();
-		}
-		
-		clearPhoto();*/
-});
+		//dynamically place the fiton as the window+user image resizes
+		if (plugin_config.responsive_positioning_in_pages || plugin_config.responsive_positioning_in_modal) {
+			$(window).on('resize', function(){
+				if (plugin_config.responsive_positioning_in_pages && $('.' + plugin_name + '_fiton_product').length) {
+					if (shop_page) position_shop_fiton();
+					else position_single_fiton();
+				}
 
-	//Depricated Methods
-	//hide fiton when user navigate to other single producgt images
-	/*const $foo = $(".flex-control-nav li:first img").classChange((el, newClass) => woo_single_img_nav(newClass));
-	function woo_single_img_nav(newClass) {
-		if (newClass.indexOf("flex-active") >= 0) $('.' + plugin_name + '_fiton_product').fadeIn();
-		else $('.' + plugin_name + '_fiton_product').hide();
-	}*/
-
-	//catch class change on a selector
-	/*$.fn.classChange = function(cb) {
-		return $(this).each((_, el) => {
-			new MutationObserver(mutations => {
-			mutations.forEach(mutation => cb && cb(mutation.target, $(mutation.target).prop(mutation.attributeName)));
-			}).observe(el, {
-			attributes: true,
-			attributeFilter: ['class'] // only listen for class attribute changes 
+				if (plugin_config.responsive_positioning_in_modal && $('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').length) {
+					//@TO-DO - save current position (as user might have edited the position already)
+					position_modal_fiton();
+				}
 			});
-		});
-	}*/
-
+		}
+	});
 })( jQuery );

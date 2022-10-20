@@ -1,18 +1,4 @@
 <?php
-
-/**
- * The file that defines the core plugin class
- *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
- *
- * @link       upentreprise.com/prabch
- * @since      1.0.0
- *
- * @package    Woo_Virtual_Fiton
- * @subpackage Woo_Virtual_Fiton/includes
- */
-
 /**
  * The core plugin class.
  *
@@ -95,27 +81,33 @@ class Woo_Virtual_Fiton {
 		$this->plugin_public_name = 'Essayage virtuel';
 
 		$this->plugin_default_config = [
+			'push_single_placement_after' => false,
+			'webcam_active' => true,
+			'shortcodes_active' => true,
+			'shop_page_active' => true,
+			'shop_loop_active' => true,
+			'single_product_active' => true,
+			'caching_active' => true,
+			'disable_single_zoom' => true,
+			'responsive_positioning_in_modal' => true,
+			'responsive_positioning_in_pages' => true,
+			'instructions_active' => true,
+			
+			'instructions'	=> "Prenez une photo à l'aide de votre webcam ou de l'appareil photo de votre téléphone ou téléversez une photo que vous avez déjà.\nAssurez-vous que la photo que vous utilisez est une photo de face claire de vous avec suffisamment d'espace autour de la tête.\nLorsque vous voyez votre photo, repositionnez et redimensionnez le chapeau jusqu'à ce qu'il vous fasse bien.\nCliquez sur enregistrer pour conserver ce positionnement. À partir de ce moment, votre photo sera utilisée pour essayer tous les chapeaux sur ce site.",
+
+			'user_image' => plugin_dir_url( dirname(__FILE__) ) . 'public/images/user_image.png',
+			'fiton_image' => plugin_dir_url( dirname(__FILE__) ) . 'public/images/fiton_image.png',
+
 			'shop_image_dimentions' => '{"width": "200px", "height": "200px"}',
 			'product_image_dimentions' => '{"width": "480px", "height": "480px"}',
 			'user_image_dimentions' => '{"width": "480", "height": "480"}',
 			'fallback_position' => '{"fallback":true,"angle":0,"x":0,"y":0,"scalex":1,"scaley":1,"top":0,"left":0,"matrix":"matrix(1, 0, 0, 1, 0, 0)","container_dimentions":{"width":400,"height":400}}',
 			'single_pimg_selector' => '.has-post-thumbnail .woocommerce-product-gallery__wrapper .woocommerce-product-gallery__image:first',
 			'products_loop' => 'ul.products li.product',
-			'products_prepend' => '.woocommerce-loop-product__link',
-			'user_image' => plugin_dir_url( dirname(__FILE__) ) . 'public/images/user_image.png',
-			'fiton_image' => plugin_dir_url( dirname(__FILE__) ) . 'public/images/fiton_image.png',
-			'instructions'	=> "Prenez une photo à l'aide de votre webcam ou de l'appareil photo de votre téléphone ou téléversez une photo que vous avez déjà.\nAssurez-vous que la photo que vous utilisez est une photo de face claire de vous avec suffisamment d'espace autour de la tête.\nLorsque vous voyez votre photo, repositionnez et redimensionnez le chapeau jusqu'à ce qu'il vous fasse bien.\nCliquez sur enregistrer pour conserver ce positionnement. À partir de ce moment, votre photo sera utilisée pour essayer tous les chapeaux sur ce site.",
-			'push_single_placement_after' => false,
-			'shortcodes_active' => true,
-			'shop_page_active' => true,
-			'shop_loop_active' => true,
-			'single_product_active' => true,
-			'caching_active' => true,
-			'disable_single_zoom' => true
+			'products_prepend' => '.woocommerce-loop-product__link'
 		];
 
 		$this->plugin_config = $this->get_plugin_config();
-
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -203,7 +195,6 @@ class Woo_Virtual_Fiton {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
 		$plugin_admin = new Woo_Virtual_Fiton_Admin( $this->get_plugin_name(), $this->get_version(), $this->plugin_public_name, $this->plugin_config );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
@@ -215,7 +206,6 @@ class Woo_Virtual_Fiton {
 
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_admin_page_settings' );
-
 	}
 
 	/**
@@ -235,9 +225,9 @@ class Woo_Virtual_Fiton {
 
 		if ($this->plugin_config['single_product_active']) $this->loader->add_action( 'woocommerce_before_add_to_cart_form', $plugin_public, 'woocom_product_page' );
 
-		if ($this->plugin_config['shop_loop_active']) $this->loader->add_action( 'woocommerce_before_shop_loop', $plugin_public, 'woocom_shop_page' );
+		if ($this->plugin_config['shop_page_active']) $this->loader->add_action( 'woocommerce_before_shop_loop', $plugin_public, 'woocom_shop_page' );
 
-		if ($this->plugin_config['shop_page_active']) $this->loader->add_action( 'woocommerce_after_shop_loop_item', $plugin_public, 'woocom_shop_loop' );
+		if ($this->plugin_config['shop_loop_active']) $this->loader->add_action( 'woocommerce_after_shop_loop_item', $plugin_public, 'woocom_shop_loop' );
 
 		if ($this->plugin_config['shortcodes_active']) {
 			$this->loader->add_shortcode( 'woo_vfiton_product_page', $plugin_public, 'woocom_product_page_shortcode' );

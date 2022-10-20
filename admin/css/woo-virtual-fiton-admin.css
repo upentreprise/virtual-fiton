@@ -1,4 +1,26 @@
-/**
- * All of the CSS for your admin-specific functionality should be
- * included in this file.
- */
+.woo-virtual-fiton_container .section-header th {
+    padding: 0px;
+}
+
+.woo-virtual-fiton_container .help-text {
+    display: block;
+    font-weight: 300;
+    color: gray;
+}
+
+.woo-virtual-fiton_container .advanced-settings td {
+    padding: 0px;
+}
+
+.woo-virtual-fiton_container .advanced-setting,
+.woo-virtual-fiton_container.advanced-on .advanced-settings {
+    display: none;
+}
+
+.woo-virtual-fiton_container.advanced-on .advanced-setting {
+    display: table-row;
+}
+
+.woo-virtual-fiton_container input[type=text] {
+    width: 500px;
+}

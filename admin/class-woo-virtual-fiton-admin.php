@@ -1,15 +1,4 @@
 <?php
-
-/**
- * The admin-specific functionality of the plugin.
- *
- * @link       upentreprise.com/prabch
- * @since      1.0.0
- *
- * @package    Woo_Virtual_Fiton
- * @subpackage Woo_Virtual_Fiton/admin
- */
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -56,7 +45,7 @@ class Woo_Virtual_Fiton_Admin {
 		$this->plugin_public_name = $plugin_public_name;
 		$this->plugin_config = $plugin_config;
 
-		// Check if WooCommerce is active
+		//check if WooCommerce is active
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		if ( !is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			$notices= get_option($this->plugin_name  . '_deferred_admin_notices', []);
@@ -72,19 +61,7 @@ class Woo_Virtual_Fiton_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Woo_Virtual_Fiton_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Woo_Virtual_Fiton_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
+		wp_enqueue_style('thickbox');
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/woo-virtual-fiton-admin.css', array(), $this->version, 'all' );
 
 	}
@@ -95,21 +72,16 @@ class Woo_Virtual_Fiton_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Woo_Virtual_Fiton_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Woo_Virtual_Fiton_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
+		wp_enqueue_script( 'thickbox' );
+		wp_enqueue_script('media-upload');
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/woo-virtual-fiton-admin.js', array( 'jquery' ), $this->version, false );
-
+		
+		$plugin_data = [
+			'plugin_name'               => $this->plugin_name,
+			'plugin_public_name'		=> $this->plugin_public_name,
+			'plugin_config'				=> $this->plugin_config
+		];
+		wp_localize_script( $this->plugin_name, 'plugin_data', $plugin_data ); 
 	}
 
 	public function add_admin_menu() {
@@ -126,15 +98,18 @@ class Woo_Virtual_Fiton_Admin {
 		register_setting( $this->plugin_name, $this->plugin_name . '_products_prepend' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_user_image' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_fiton_image' );
+		register_setting( $this->plugin_name, $this->plugin_name . '_instructions_active' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_instructions' );
-
 		register_setting( $this->plugin_name, $this->plugin_name . '_push_single_placement_after');
+		register_setting( $this->plugin_name, $this->plugin_name . '_webcam_active');
 		register_setting( $this->plugin_name, $this->plugin_name . '_shortcodes_active');
 		register_setting( $this->plugin_name, $this->plugin_name . '_shop_page_active' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_shop_loop_active' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_single_product_active' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_caching_active' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_disable_single_zoom' );
+		register_setting( $this->plugin_name, $this->plugin_name . '_responsive_positioning_in_modal' );
+		register_setting( $this->plugin_name, $this->plugin_name . '_responsive_positioning_in_pages' );
 	}
 
 	public function admin_page_view(){
@@ -191,22 +166,15 @@ class Woo_Virtual_Fiton_Admin {
 		}
 	}
 
-	public function add_woocommerce_fiton_image_field() {
-		$args = [
-			'id' => $this->plugin_name . '_fiton_image',
-			'label' => __( 'Transparent FitOn Image', 'hvto' ),
-			'class' => $this->plugin_name . '-fiton-image',
-			'desc_tip' => true,
-			'description' => __( 'This image will be used when user fits on this product', $this->plugin_name ),
-		];
-		woocommerce_wp_text_input( $args );
-	}
-
 	public function save_woocommerce_fiton_image_field( $post_id ) {
 		$product = wc_get_product( $post_id );
 		$title = isset( $_POST[$this->plugin_name . '_fiton_image'] ) ? $_POST[ $this->plugin_name . '_fiton_image'] : '';
 		$product->update_meta_data( $this->plugin_name . '_fiton_image', sanitize_text_field( $title ) );
 		$product->save();
+	}
+
+	public function add_woocommerce_fiton_image_field() {
+		include 'partials/woo-virtual-fiton-product.php';
 	}
 
 }

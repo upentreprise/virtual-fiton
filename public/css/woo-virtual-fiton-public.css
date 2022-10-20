@@ -1,6 +1,7 @@
 .woo-virtual-fiton_container {
   --primary-color: #645bff;
   --secondary-color: #fff;
+  --primary-color-dark: #4e47c5;
   --layer-color: #ccc;
   --hover-color: #111;
   --active-color: #400000;
@@ -79,19 +80,21 @@
   border: 0;
   border-radius: 3px;
   color: var(--secondary-color);
-  padding: 1em 1.8em;
+  padding: 0.7em 1em;
   background: var(--primary-color);
+  border: 2px solid var(--primary-color-dark);
   display: inline-flex;
-  transition: 0.2s background;
+  transition: 0.4s background;
   align-items: center;
   gap: 0.6em;
   font-weight: bold;
   cursor: pointer;
   margin: 0.3em 0.1em;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .woo-virtual-fiton_container button.small-btn {
-  padding: 0.4em 1em;
+  padding: 0.3em 0.8em;
   font-weight: 400;
   font-size: 0.85em;
   margin: 0;
@@ -224,7 +227,7 @@
   height: 40px;
 }
 
-.woo-virtual-fiton_container .toggle-section div {
+.woo-virtual-fiton_container .toggle-section .toggle-label {
   display: inline-block;
   padding: 0 0.8em;
   font-weight: 500;
@@ -292,8 +295,14 @@
 }
 
 /* responsive */
+@media screen and (min-width: 1024px) {
+  #woo-virtual-fiton_modal .column {
+    max-height: 500px;
+    overflow: scroll;
+  }
+}
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 1024px) {
   #woo-virtual-fiton_modal .column {
     width: 100%;
   }

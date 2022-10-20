@@ -193,7 +193,7 @@
                 }
 
                 // translate (aka move)
-                container.bind('mousedown.freetrans', _ifLeft(_noSelect(function(evt) {
+                container.bind('touchstart.freetrans mousedown.freetrans', _ifLeft(_noSelect(function(evt) {
                         var data = sel.data('freetrans');
                         var p = Point(evt.pageX, evt.pageY);
                         var drag = _noSelect(function(evt) {
@@ -204,16 +204,16 @@
                         });
 
                         var up = function(evt) {
-                                $(document).unbind('mousemove.freetrans', drag);
-                                $(document).unbind('mouseup.freetrans', up);
+                                $(document).unbind('touchmove.freetrans mousemove.freetrans', drag);
+                                $(document).unbind('touchend.freetrans mouseup.freetrans', up);
                         };
 
-                        $(document).bind('mousemove.freetrans', drag);
-                        $(document).bind('mouseup.freetrans', up);
+                        $(document).bind('touchmove.freetrans mousemove.freetrans', drag);
+                        $(document).bind('touchend.freetrans mouseup.freetrans', up);
                 })));
 
                 // rotate
-                rotator.bind('mousedown.freetrans', _ifLeft(_noSelect(function(evt) {
+                rotator.bind('touchstart.freetrans mousedown.freetrans', _ifLeft(_noSelect(function(evt) {
                         evt.stopPropagation();
 
                         var data = sel.data('freetrans'),
@@ -234,16 +234,16 @@
                         });
 
                         var up = function(evt) {
-                                $(document).unbind('mousemove.freetrans', drag);
-                                $(document).unbind('mouseup.freetrans', up);
+                                $(document).unbind('touchmove.freetrans mousemove.freetrans', drag);
+                                $(document).unbind('touchend.freetrans mouseup.freetrans', up);
                         };
 
-                        $(document).bind('mousemove.freetrans', drag);
-                        $(document).bind('mouseup.freetrans', up);
+                        $(document).bind('touchmove.freetrans mousemove.freetrans', drag);
+                        $(document).bind('touchend.freetrans mouseup.freetrans', up);
                 })));
 
                 // scale
-                container.find('.ft-scaler').bind('mousedown.freetrans', _ifLeft(_noSelect(function(evt) {
+                container.find('.ft-scaler').bind('touchstart.freetrans mousedown.freetrans', _ifLeft(_noSelect(function(evt) {
                         evt.stopPropagation();
 
                         /**
@@ -445,15 +445,16 @@
 
                         var up = function(evt) {
                                 _draw(sel, data);
-                                $(document).unbind('mousemove.freetrans', drag);
-                                $(document).unbind('mouseup.freetrans', up);
+                                $(document).unbind('touchmove.freetrans mousemove.freetrans', drag);
+                                $(document).unbind('touchend.freetrans mouseup.freetrans', up);
                         };
 
-                        $(document).bind('mousemove.freetrans', drag);
-                        $(document).bind('mouseup.freetrans', up);
+                        $(document).bind('touchmove.freetrans mousemove.freetrans', drag);
+                        $(document).bind('touchend.freetrans mouseup.freetrans', up);
                 })));
 
-                container.bind('gesturestart', function(evt) {
+                //ipad gestures (disabled as this only supports pinch and rotate, no support for move)
+                /*container.bind('gesturestart', function(evt) {
                         evt.stopPropagation();
                 
                         var data = sel.data('freetrans'),
@@ -486,6 +487,9 @@
                 
                                 data._p.cwid = data._p.wid * data.scalex;
                                 data._p.chgt = data._p.hgt * data.scaley;
+
+                                //data.x += evt.pageX - p.x;
+                                //data.y += evt.pageY - p.y;
                 
                                 _draw(sel, data);
                         });
@@ -497,14 +501,14 @@
                 
                         $(document).bind('gesturechange.freetrans', change);
                         $(document).bind('gestureend.freetrans', end);
-                });
+                });*/
 
                 sel.css({position: 'absolute'});
         }
 
         function _ifLeft(callback) {
                 return function(evt) {
-                        if (evt.which === 1) {
+                        if (evt.which === 1 || evt.which===0) {
                                 return callback(evt);
                         }
                 };
