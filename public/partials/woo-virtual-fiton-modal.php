@@ -37,8 +37,8 @@
 
             <div class="webcam-block">
             <div class="column-sub-title"><?=__( 'Capture', $this->plugin_name )?></div>
-            <button id="<?=$this->plugin_name?>_webcam_switch_btn"><span class="dashicons dashicons-update"></span><?=__( 'Switch camera', $this->plugin_name )?></button>
-            <button id="<?=$this->plugin_name?>_webcam_shoot_btn"><span class="dashicons dashicons-camera"></span><?=__( 'Capture', $this->plugin_name )?></button>
+            <button id="<?=$this->plugin_name?>_webcam_switch_btn"><span class="dashicons dashicons-update"></span><?=__( 'Autre caméra', $this->plugin_name )?></button>
+            <button id="<?=$this->plugin_name?>_webcam_shoot_btn"><span class="dashicons dashicons-camera"></span><?=__( 'Prendre la photo', $this->plugin_name )?></button>
             <br><br>
             </div>
 
