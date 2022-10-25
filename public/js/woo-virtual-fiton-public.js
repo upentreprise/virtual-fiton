@@ -512,6 +512,11 @@
 		}
 	}
 
+	function close_webcam () {
+		$('.' + plugin_name + '_container').removeClass('webcam-on');
+		if (mediaStream != null) mediaStream.getTracks().forEach(track => track.stop());
+	}
+
 	function toggle_webcam () {
 		if (webcam_env == 'user') webcam_env = 'environment';
 		else webcam_env = 'user';
@@ -530,9 +535,8 @@
 		  canvas.height = height;
 		  context.drawImage(video, 0, 0, width, height);    
 		  var data = canvas.toDataURL('image/png');
-		  $('.' + plugin_name + '_container').removeClass('webcam-on');
+		  close_webcam ();
 		  set_new_user_image(data);
-		  mediaStream.getTracks().forEach(track => track.stop());
 		} else {
 		  alert('capture failed. please try again');
 		}
@@ -630,6 +634,12 @@
 		$('.' + plugin_name + '_container #' + plugin_name + '_webcam_shoot_btn').click( function() {
 			capture_webcam();
 		});
+
+		//turn off webcam when modal window get closed
+		$.magnificPopup.instance.close = function () {
+			close_webcam ();
+			$.magnificPopup.proto.close.call(this);
+		};
 
 		//dynamically place the fiton as the window+user image resizes
 		if (plugin_config.responsive_positioning_in_pages || plugin_config.responsive_positioning_in_modal) {
