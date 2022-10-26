@@ -1,12 +1,23 @@
 .woo-virtual-fiton_container {
   --primary-color: #645bff;
   --secondary-color: #fff;
-  --primary-color-dark: #4e47c5;
+  --primary-color-dark: #49454566;
   --layer-color: #ccc;
   --hover-color: #111;
   --active-color: #400000;
   --arrow-width: 10px;
   --arrow-stroke: 2px;
+}
+
+.woo-virtual-fiton_container .upload-block::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 10px;
+}
+
+.woo-virtual-fiton_container .upload-block::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: rgba(0,0,0,.5);
+  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 
 .woo-virtual-fiton_fiton_product {
@@ -298,7 +309,7 @@
 @media screen and (min-width: 1024px) {
   #woo-virtual-fiton_modal .column {
     max-height: 500px;
-    overflow: scroll;
+    overflow-y: scroll;
   }
 }
 

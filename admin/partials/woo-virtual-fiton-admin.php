@@ -130,6 +130,18 @@
 
         <tr valign="top">
         <th scope="row">
+            <?=__( 'Theme color', $this->plugin_name )?>
+        </th>
+        <td>
+            <?php 
+            $this->show_setting_input('text', $this->plugin_name . '_theme_color', $this->plugin_name . '_theme_color', [], $this->plugin_config['theme_color']); 
+            ?>
+            <span class="help-text"><?=__( 'will be used for buttons, toggles and modal window design', $this->plugin_name )?></span>
+        </td>
+        </tr>
+
+        <tr valign="top">
+        <th scope="row">
             <?=__( 'User image', $this->plugin_name )?>
         </th>
         <td>

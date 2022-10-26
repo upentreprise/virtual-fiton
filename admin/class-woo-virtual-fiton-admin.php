@@ -110,6 +110,7 @@ class Woo_Virtual_Fiton_Admin {
 		register_setting( $this->plugin_name, $this->plugin_name . '_disable_single_zoom' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_responsive_positioning_in_modal' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_responsive_positioning_in_pages' );
+		register_setting( $this->plugin_name, $this->plugin_name . '_theme_color' );
 	}
 
 	public function admin_page_view(){

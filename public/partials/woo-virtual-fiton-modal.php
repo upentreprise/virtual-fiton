@@ -1,5 +1,5 @@
 <!-- start of virtual fiton section -->
-<div id="<?=$this->plugin_name?>_<?=$page?>_modal" class="<?=$this->plugin_name?>_container <?=$this->plugin_name?>_<?=$page?>_container fiton-disabled">
+<div id="<?=$this->plugin_name?>_<?=$page?>_modal" class="<?=$this->plugin_name?>_container <?=$this->plugin_name?>_<?=$page?>_container fiton-disabled" style="--primary-color: <?=$this->plugin_config['theme_color']?>;">
 
   <?php if ($page == 'single') : ?>
     <input type="hidden" id="<?=$this->plugin_name?>_product_id" value="<?=$post->ID?>">
@@ -14,7 +14,7 @@
       <span class="slider round"></span>
     </label>
     <div class="toggle-label"><?=$this->plugin_public_name?></div>
-    <button type="button" id="<?=$this->plugin_name?>_open_modal" class="small-btn" href="#<?=$this->plugin_name?>_modal"><?=__( 'Essayer', $this->plugin_name )?><div class="arrow-wrapper"><div class="arrow"></div></div></button>
+    <button type="button" id="<?=$this->plugin_name?>_open_modal" class="small-btn" href="#<?=$this->plugin_name?>_modal"><span class="caption"><?=__( 'Essayer', $this->plugin_name )?></span><div class="arrow-wrapper"><div class="arrow"></div></div></button>
   </div>
 
   <div id="<?=$this->plugin_name?>_modal" class="modal-window mfp-hide <?=$this->plugin_name?>_container">
