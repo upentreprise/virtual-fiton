@@ -181,6 +181,9 @@
 		//get fiton image dimentions (only once)
 		if (!fiton_img_dimentions)fiton_img_dimentions = await get_image_dimentions(fiton_img);
 
+		//change adjust button caption
+		$('#' + plugin_name + '_open_modal .caption').html('Adjuster');
+
 		//prepend image
 		$(single_pimg_selector).prepend('<img class="' + plugin_name + '_fiton_product" src="' + fiton_img + '" style="display:none;">');
 		position_single_fiton();
@@ -217,7 +220,8 @@
 			$('#' + plugin_name + '_modal #' + plugin_name + '_upload_btn .caption').html('Téléverser une photo');
 			return false;
 		} else{
-			$('#' + plugin_name + '_modal #' + plugin_name + '_upload_btn .caption, #' + plugin_name + '_modal #' + plugin_name + '_webcam_btn .caption').html('Changer la photo');
+			$('#' + plugin_name + '_modal #' + plugin_name + '_webcam_btn .caption').html('Reprendre une photo');
+			$('#' + plugin_name + '_modal #' + plugin_name + '_upload_btn .caption').html('Retéléverser une photo');
 		}
 		
 		//ux
@@ -414,7 +418,8 @@
 			$('#' + plugin_name + '_modal #' + plugin_name + '_upload_btn .caption').html('Téléverser une photo');
 			return false;
 		} else{
-			$('#' + plugin_name + '_modal #' + plugin_name + '_upload_btn .caption, #' + plugin_name + '_modal #' + plugin_name + '_webcam_btn .caption').html('Changer la photo');
+			$('#' + plugin_name + '_modal #' + plugin_name + '_webcam_btn .caption').html('Reprendre une photo');
+			$('#' + plugin_name + '_modal #' + plugin_name + '_upload_btn .caption').html('Retéléverser une photo');
 		}
 		
 		//ux
