@@ -305,8 +305,8 @@
 		}
 	}
 
-	function toggle_single_fiton () {
-		if ($('.' + plugin_name + '_fiton_product').length) {
+	function toggle_single_fiton (disable = false) {
+		if ($('.' + plugin_name + '_fiton_product').length || disable) {
 			$('.' + plugin_name + '_fiton_product').remove();
 			_revert_single_product_image();
 		} else {
@@ -645,6 +645,11 @@
 			close_webcam ();
 			$.magnificPopup.proto.close.call(this);
 		};
+
+		$('.variations a').click(function() {
+			$('.' + plugin_name + '_container #' + plugin_name + '_toggle').prop('checked', false);
+			toggle_single_fiton(true);
+		});
 
 		//dynamically place the fiton as the window+user image resizes
 		if (plugin_config.responsive_positioning_in_pages || plugin_config.responsive_positioning_in_modal) {
