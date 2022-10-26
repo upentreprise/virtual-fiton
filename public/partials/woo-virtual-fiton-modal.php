@@ -17,7 +17,7 @@
     <button type="button" id="<?=$this->plugin_name?>_open_modal" class="small-btn" href="#<?=$this->plugin_name?>_modal"><span class="caption"><?=__( 'Essayer', $this->plugin_name )?></span><div class="arrow-wrapper"><div class="arrow"></div></div></button>
   </div>
 
-  <div id="<?=$this->plugin_name?>_modal" class="modal-window mfp-hide <?=$this->plugin_name?>_container">
+  <div id="<?=$this->plugin_name?>_modal" class="modal-window mfp-hide <?=$this->plugin_name?>_container" style="--primary-color: <?=$this->plugin_config['theme_color']?>;">
     <div class="header-block"><?=$this->plugin_public_name?></div>
     <div class="row">
         <div class="column image-block">
