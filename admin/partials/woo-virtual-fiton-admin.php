@@ -164,6 +164,18 @@
         </td>
         </tr>
 
+        <tr valign="top">
+        <th scope="row">
+            <?=__( 'Webcam guide image', $this->plugin_name )?>
+        </th>
+        <td>
+            <?php 
+            $this->show_setting_input('text', $this->plugin_name . '_placeholder_image', $this->plugin_name . '_placeholder_image', [], $this->plugin_config['placeholder_image']); 
+            ?>
+            <span class="help-text"><?=__( 'will be shown over the webcam stream to help users position themselves', $this->plugin_name )?></span>
+        </td>
+        </tr>
+
         <tr valign="top" class="advanced-settings">
             <th scope="row">
                 <?=__( 'Advanced settings', $this->plugin_name )?>

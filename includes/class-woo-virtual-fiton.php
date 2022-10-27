@@ -97,6 +97,7 @@ class Woo_Virtual_Fiton {
 
 			'user_image' => plugin_dir_url( dirname(__FILE__) ) . 'public/images/user_image.png',
 			'fiton_image' => plugin_dir_url( dirname(__FILE__) ) . 'public/images/fiton_image.png',
+			'placeholder_image' => plugin_dir_url( dirname(__FILE__) ) . 'public/images/placeholder_image.png',
 
 			'theme_color' => '#645bff',
 			'shop_image_dimentions' => '{"width": "200px", "height": "200px"}',

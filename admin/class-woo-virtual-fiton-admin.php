@@ -98,6 +98,7 @@ class Woo_Virtual_Fiton_Admin {
 		register_setting( $this->plugin_name, $this->plugin_name . '_products_prepend' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_user_image' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_fiton_image' );
+		register_setting( $this->plugin_name, $this->plugin_name . '_placeholder_image' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_instructions_active' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_instructions' );
 		register_setting( $this->plugin_name, $this->plugin_name . '_push_single_placement_after');

@@ -24,6 +24,15 @@
   z-index: 9;
 }
 
+#woo-virtual-fiton_placeholder_image {
+  display: none;
+  position: absolute;
+  top: 45px;
+  left: 0;
+  object-fit: contain;
+  opacity: 0.5;
+}
+
 .woo-virtual-fiton_container input[type='file'], 
 .woo-virtual-fiton_container canvas,
 .woo-virtual-fiton_container .webcam-block,
@@ -37,8 +46,15 @@
 }
 
 .woo-virtual-fiton_container.webcam-on video,
-.woo-virtual-fiton_container.webcam-on .webcam-block{
+.woo-virtual-fiton_container.webcam-on .webcam-block,
+.woo-virtual-fiton_container.webcam-on #woo-virtual-fiton_placeholder_image{
   display: block;
+}
+
+.woo-virtual-fiton_container .webcam-block{
+  position: relative;
+  background: #cacaca8a;
+  padding: 10px 0;
 }
 
 /*.woo-virtual-fiton_container input[type='file'] {
@@ -109,6 +125,15 @@
   font-weight: 400;
   font-size: 0.85em;
   margin: 0;
+}
+
+.woo-virtual-fiton_container .webcam-block button {
+  border-radius: 60px;
+  padding: 1em;
+}
+
+.woo-virtual-fiton_container .webcam-block button#woo-virtual-fiton_webcam_shoot_btn {
+  background: red;
 }
 
 .woo-virtual-fiton_container button .arrow-wrapper {
@@ -188,6 +213,7 @@
 #woo-virtual-fiton_modal .column.image-block {
   padding: 0px;
   margin-bottom: -9px;
+  text-align: center;
 }
 
 #woo-virtual-fiton_modal .row:after {

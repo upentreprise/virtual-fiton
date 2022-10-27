@@ -493,6 +493,7 @@
 	async function open_webcam () {  
 		try {
 		  $('.' + plugin_name + '_container').addClass('webcam-on');
+		  $('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image').hide();
 		  $('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').freetrans('destroy').remove();
 
 		  // stop the current video stream
@@ -511,6 +512,8 @@
 		  
 		  // get new media stream
 		  await get_media_stream(constraints);
+		  setTimeout(position_webcam_placeholder, 3000);
+			
 		} catch (err)  {    
 		  console.error(err.message); 
 		  alert(err.message);
@@ -545,6 +548,13 @@
 		} else {
 		  alert('capture failed. please try again');
 		}
+	}
+
+	function position_webcam_placeholder () {
+		$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image')
+		.css('height', $('#' + plugin_name + '_camera').height() + 'px')
+		.css('width', $('#' + plugin_name + '_camera').width() + 'px')
+		.fadeIn();
 	}
 
 	$( window ).load(function() {
@@ -663,6 +673,8 @@
 					//@TO-DO - save current position (as user might have edited the position already)
 					position_modal_fiton();
 				}
+
+				if ($('.' + plugin_name + '_container').hasClass('webcam-on')) position_webcam_placeholder();
 			});
 		}
 	});
