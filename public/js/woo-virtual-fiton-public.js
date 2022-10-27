@@ -361,7 +361,7 @@
 		});
 
 		//we need a timeout before positioning fiton (reason unknown)
-		setTimeout(function(){ position_shop_fiton(); }, 100);
+		setTimeout(function(){ position_shop_fiton(); }, 500);
 	}
 
 	function position_shop_fiton(){
