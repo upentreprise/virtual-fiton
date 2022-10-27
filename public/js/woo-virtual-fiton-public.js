@@ -182,7 +182,7 @@
 		if (!fiton_img_dimentions)fiton_img_dimentions = await get_image_dimentions(fiton_img);
 
 		//change adjust button caption
-		$('#' + plugin_name + '_open_modal .caption').html('Adjuster');
+		$('#' + plugin_name + '_open_modal .caption').html('Ajuster');
 
 		//prepend image
 		$(single_pimg_selector).prepend('<img class="' + plugin_name + '_fiton_product" src="' + fiton_img + '" style="display:none;">');
