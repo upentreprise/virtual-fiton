@@ -35,6 +35,22 @@
             </div>
         </div>
         <div class="column upload-block">
+
+            <div class="android-controls-block">
+              <div class="column-sub-title"><?=__( 'Ajuster', $this->plugin_name )?></div>
+
+              <div class="slidecontainer">
+                <label>rotate</label>
+                <input type="range" min="0" max="360" value="180" id="<?=$this->plugin_name?>_rotate_slider">
+              </div>
+
+              <div class="slidecontainer">
+                <label>scale</label>
+                <input type="range" min="0.1" max="2" value="1" step="0.05" id="<?=$this->plugin_name?>_scale_slider">
+              </div>
+              <br>
+            </div>
+
             <div class="column-sub-title"><?=__( 'Votre Photo', $this->plugin_name )?></div>
             <?php if ($this->plugin_config['webcam_active']): ?>
               <button type="button" id="<?=$this->plugin_name?>_webcam_btn"><span class="dashicons dashicons-camera-alt"></span><span class="caption"><?=__( 'Prendre une photo', $this->plugin_name )?></span></button>

@@ -20,6 +20,10 @@
   -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 
+.woo-virtual-fiton_container input[type="range"]  {
+  width: 100%;
+}
+
 .woo-virtual-fiton_fiton_product {
   z-index: 9;
 }
@@ -36,7 +40,12 @@
 .woo-virtual-fiton_container input[type='file'], 
 .woo-virtual-fiton_container canvas,
 .woo-virtual-fiton_container .webcam-block,
-.woo-virtual-fiton_container.webcam-on .preview-image {
+.woo-virtual-fiton_container.webcam-on .preview-image,
+.woo-virtual-fiton_container .android-controls-block {
+  display: none;
+}
+
+.woo-virtual-fiton_container.android-on .ft-controls{
   display: none;
 }
 
@@ -47,7 +56,8 @@
 
 .woo-virtual-fiton_container.webcam-on video,
 .woo-virtual-fiton_container.webcam-on .webcam-block,
-.woo-virtual-fiton_container.webcam-on #woo-virtual-fiton_placeholder_image{
+.woo-virtual-fiton_container.webcam-on #woo-virtual-fiton_placeholder_image,
+.woo-virtual-fiton_container.android-on .android-controls-block {
   display: block;
 }
 

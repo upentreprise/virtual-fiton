@@ -9,7 +9,7 @@
  * Plugin Name:       WooCommerce Virtual FitOn
  * Plugin URI:        upentreprise.com
  * Description:       Let shoppers try your products virtually before they buy.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            UPentreprise
  * Author URI:        upentreprise.com/prabch
  * License:           GPL-2.0+
@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WOO_VIRTUAL_FITON_VERSION', '1.0.0' );
+define( 'WOO_VIRTUAL_FITON_VERSION', '1.0.1' );
 
 /**
  * The code that runs during plugin activation.

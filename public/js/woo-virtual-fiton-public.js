@@ -23,6 +23,8 @@
 			facingMode: "user"
 		} 
 	}; 
+	var user_agent = navigator.userAgent.toLowerCase();
+	var is_android = user_agent.indexOf("android") > -1;
 
 	//global methods
 	function get_image_meta(url) {
@@ -661,9 +663,14 @@
 			toggle_single_fiton(true);
 		});
 
-		//dynamically place the fiton as the window+user image resizes
-		if (plugin_config.responsive_positioning_in_pages || plugin_config.responsive_positioning_in_modal) {
+		//dynamically place the fiton as the window+user image resizes (except for android)
+		if (!is_android && (plugin_config.responsive_positioning_in_pages || plugin_config.responsive_positioning_in_modal)) {
+			var win_width = $(window).width();
 			$(window).on('resize', function(){
+
+				//prevent iOS/Safari from firing window resize on scroll
+				if(win_width == $(window).width()) return false;
+
 				if (plugin_config.responsive_positioning_in_pages && $('.' + plugin_name + '_fiton_product').length) {
 					if (shop_page) position_shop_fiton();
 					else position_single_fiton();
@@ -677,5 +684,26 @@
 				if ($('.' + plugin_name + '_container').hasClass('webcam-on')) position_webcam_placeholder();
 			});
 		}
+
+		//android only
+		/*if (is_android) {
+			var rotate_slider = document.getElementById(plugin_name + '_rotate_slider');
+			rotate_slider.oninput = function() {
+				$('#' + plugin_name + '_fiton_product').freetrans({
+					angle: this.value - 180
+				});
+			}
+	
+			var scale_slider = document.getElementById(plugin_name + '_scale_slider');
+			scale_slider.oninput = function() {
+					$('#' + plugin_name + '_fiton_product').freetrans({
+						scalex: this.value,
+						scaley: this.value
+					});
+			}
+
+			$('.' + plugin_name + '_container').addClass('android-on');
+		}*/
+
 	});
 })( jQuery );
