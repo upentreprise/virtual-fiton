@@ -14,7 +14,7 @@
       <span class="slider round"></span>
     </label>
     <div class="toggle-label"><?=$this->plugin_public_name?></div>
-    <button type="button" id="<?=$this->plugin_name?>_open_modal" class="small-btn" href="#<?=$this->plugin_name?>_modal"><span class="caption"><?=__( 'Essayer', $this->plugin_name )?></span><div class="arrow-wrapper"><div class="arrow"></div></div></button>
+    <button type="button" id="<?=$this->plugin_name?>_open_modal" class="small-btn" href="#<?=$this->plugin_name?>_modal"><span class="caption"><?=__( 'Essayer avec ma photo', $this->plugin_name )?></span><div class="arrow-wrapper"><div class="arrow"></div></div></button>
   </div>
 
   <div id="<?=$this->plugin_name?>_modal" class="modal-window mfp-hide <?=$this->plugin_name?>_container" style="--primary-color: <?=$this->plugin_config['theme_color']?>;">

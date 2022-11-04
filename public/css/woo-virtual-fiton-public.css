@@ -284,7 +284,7 @@
 .woo-virtual-fiton_container .toggle-switch {
   position: relative;
   display: inline-block;
-  width: 55px;
+  min-width: 55px;
   height: 27px;
   margin-bottom: unset;
 }
