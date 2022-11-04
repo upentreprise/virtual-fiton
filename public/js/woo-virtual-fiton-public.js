@@ -362,8 +362,8 @@
 			$(this).find(products_prepend).prepend('<img class="' + plugin_name + '_fiton_product" src="' + fiton_img + '" data-fitonwidth="' + fiton_img_dimentions.width + '" data-fitonheight="' + fiton_img_dimentions.height + '" style="display:none;">');
 		});
 
-		//we need a timeout before positioning fiton (reason unknown)
-		setTimeout(function(){ position_shop_fiton(); }, 500);
+		//we need a timeout before positioning fiton (images take time to load/ this need to be handled better @TO-DO)
+		setTimeout(function(){ position_shop_fiton(); }, 2000);
 	}
 
 	function position_shop_fiton(){
@@ -583,12 +583,7 @@
 				//forefully place element after single product price element
 				if (plugin_config.push_single_placement_after)$('.' + plugin_name + '_container').insertAfter(plugin_config.push_single_placement_after);
 
-				if (fiton_available(product_id)) {
-					set_single_fiton();
-					//$TODO : a really hacky way to force load fiton images
-					setTimeout(function(){ toggle_single_fiton(true);}, 250);
-					setTimeout(function(){ toggle_single_fiton(); }, 250);
-				} 
+				if (fiton_available(product_id)) set_single_fiton();
 			}, 2000);
 		}
 
@@ -602,9 +597,6 @@
 			if (shop_image_width > 0 && shop_image_height >0) shop_image_dimentions = {width: $(products_loop + ':first img:first').width() + 'px', height: $(products_loop + ' :first img:first').height() + 'px'};
 
 			set_shop_fiton();
-			//$TODO : a really hacky way to force load fiton images
-			setTimeout(function(){ toggle_shop_fiton(true);}, 300);
-			setTimeout(function(){ toggle_shop_fiton(); }, 200);
 		}
 
 		//fiton toggle (trigger toggle on label)
@@ -627,17 +619,8 @@
 			_disable_fiton_edit();
 			$.magnificPopup.close();
 
-			if (shop_page) {
-				set_shop_fiton();
-				//$TODO : a really hacky way to force load fiton images
-				setTimeout(function(){ toggle_shop_fiton(true);}, 300);
-				setTimeout(function(){ toggle_shop_fiton(); }, 200);
-			} else {
-				set_single_fiton();
-				//$TODO : a really hacky way to force load fiton images
-				setTimeout(function(){ toggle_single_fiton(true);}, 300);
-				setTimeout(function(){ toggle_single_fiton(); }, 200);
-			}
+			if (shop_page) set_shop_fiton();
+			else set_single_fiton();
 		});
 
 		//fiton edit btn
