@@ -469,8 +469,8 @@
 		});
 	}
 
-	function toggle_shop_fiton () {
-		if ($(products_loop + ':first').find('.' + plugin_name + '_fiton_product').length) {
+	function toggle_shop_fiton (disable = false) {
+		if ($(products_loop + ':first').find('.' + plugin_name + '_fiton_product').length || disable) {
 			$(products_loop + ' .' + plugin_name + '_fiton_product').remove();
 			_revert_shop_product_images();
 		} else {
@@ -546,6 +546,7 @@
 		  context.drawImage(video, 0, 0, width, height);    
 		  var data = canvas.toDataURL('image/png');
 		  close_webcam ();
+		  mediaStream = null;
 		  set_new_user_image(data);
 		} else {
 		  alert('capture failed. please try again');
@@ -553,10 +554,12 @@
 	}
 
 	function position_webcam_placeholder () {
-		$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image')
-		.css('height', $('#' + plugin_name + '_camera').height() + 'px')
-		.css('width', $('#' + plugin_name + '_camera').width() + 'px')
-		.fadeIn();
+		if (mediaStream != null) {
+			$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image')
+			.css('height', $('#' + plugin_name + '_camera').height() + 'px')
+			.css('width', $('#' + plugin_name + '_camera').width() + 'px')
+			.fadeIn();
+		}
 	}
 
 	$( window ).load(function() {
@@ -571,12 +574,22 @@
 
 			// set default product image dimentions 
 			//@TODO :below function does not return actual dimentions as drawn in client, so we will use the fallback values from plugin config
-			//product_image_dimentions = {width: $(single_pimg_selector + ' a img').width() + 'px', height: $(single_pimg_selector + ' a img').height() + 'px'};
+			$(single_pimg_selector + ' a img').removeAttr('width').removeAttr('height');
+			setTimeout(function(){ 
+				product_image_dimentions = {width: $(single_pimg_selector + ' a img').width() + 'px', height: $(single_pimg_selector + ' a img').height() + 'px'};
 
-			//forefully place element after single product price element
-			if (plugin_config.push_single_placement_after)$('.' + plugin_name + '_container').insertAfter(plugin_config.push_single_placement_after);
+				console.log(product_image_dimentions);
 
-			if (fiton_available(product_id)) set_single_fiton();
+				//forefully place element after single product price element
+				if (plugin_config.push_single_placement_after)$('.' + plugin_name + '_container').insertAfter(plugin_config.push_single_placement_after);
+
+				if (fiton_available(product_id)) {
+					set_single_fiton();
+					//$TODO : a really hacky way to force load fiton images
+					setTimeout(function(){ toggle_single_fiton(true);}, 250);
+					setTimeout(function(){ toggle_single_fiton(); }, 250);
+				} 
+			}, 2000);
 		}
 
 		//auto fiton on shop page
@@ -589,6 +602,9 @@
 			if (shop_image_width > 0 && shop_image_height >0) shop_image_dimentions = {width: $(products_loop + ':first img:first').width() + 'px', height: $(products_loop + ' :first img:first').height() + 'px'};
 
 			set_shop_fiton();
+			//$TODO : a really hacky way to force load fiton images
+			setTimeout(function(){ toggle_shop_fiton(true);}, 300);
+			setTimeout(function(){ toggle_shop_fiton(); }, 200);
 		}
 
 		//fiton toggle (trigger toggle on label)
@@ -611,8 +627,17 @@
 			_disable_fiton_edit();
 			$.magnificPopup.close();
 
-			if (shop_page) set_shop_fiton();
-			else set_single_fiton();
+			if (shop_page) {
+				set_shop_fiton();
+				//$TODO : a really hacky way to force load fiton images
+				setTimeout(function(){ toggle_shop_fiton(true);}, 300);
+				setTimeout(function(){ toggle_shop_fiton(); }, 200);
+			} else {
+				set_single_fiton();
+				//$TODO : a really hacky way to force load fiton images
+				setTimeout(function(){ toggle_single_fiton(true);}, 300);
+				setTimeout(function(){ toggle_single_fiton(); }, 200);
+			}
 		});
 
 		//fiton edit btn
