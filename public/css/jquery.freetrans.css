@@ -5,6 +5,8 @@
 .ft-container {
 	position: absolute;
     z-index: 1;
+    height: 0;
+    width: 0;
 }
 
 .ft-controls {

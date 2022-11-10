@@ -51,12 +51,12 @@
 		FR.readAsDataURL(this.files[0]);
 	}
 
-	function set_new_user_image(img) {
+	async function set_new_user_image(img) {
 		save_user_image(img);
 		if (product_id) {
-			set_single_modal_fiton(false);
+			await set_single_modal_fiton(false);
 		} else if (shop_page) {
-			set_shop_modal_fiton(false);
+			await set_shop_modal_fiton(false);
 		}
 	}
 
@@ -514,8 +514,14 @@
 		  
 		  // get new media stream
 		  await get_media_stream(constraints);
-		  setTimeout(position_webcam_placeholder, 3000);
-			
+
+		  var interval = setInterval(function() {
+			if (mediaStream != null) {
+			  position_webcam_placeholder()
+			  clearInterval(interval);
+			}
+		  }, 500);
+
 		} catch (err)  {    
 		  console.error(err.message); 
 		  alert(err.message);
@@ -525,6 +531,7 @@
 	function close_webcam () {
 		$('.' + plugin_name + '_container').removeClass('webcam-on');
 		if (mediaStream != null) mediaStream.getTracks().forEach(track => track.stop());
+		$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image').hide();
 	}
 
 	function toggle_webcam () {
@@ -563,6 +570,7 @@
 	}
 
 	$( window ).load(function() {
+
 		//read selected image file (with no upload to server)
 		if ($('#' + plugin_name + '_product_id').length || $('#' + plugin_name + '_shop').val() == 'true' || $('#' + plugin_name + '_shop').val() == '1') {
 			document.querySelector('#' + plugin_name + '_user_image').addEventListener("change", handle_user_image_upload);
@@ -577,8 +585,6 @@
 			$(single_pimg_selector + ' a img').removeAttr('width').removeAttr('height');
 			setTimeout(function(){ 
 				product_image_dimentions = {width: $(single_pimg_selector + ' a img').width() + 'px', height: $(single_pimg_selector + ' a img').height() + 'px'};
-
-				console.log(product_image_dimentions);
 
 				//forefully place element after single product price element
 				if (plugin_config.push_single_placement_after)$('.' + plugin_name + '_container').insertAfter(plugin_config.push_single_placement_after);
@@ -663,6 +669,7 @@
 		//turn off webcam when modal window get closed
 		$.magnificPopup.instance.close = function () {
 			close_webcam ();
+			$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image').hide();
 			$.magnificPopup.proto.close.call(this);
 		};
 
@@ -670,6 +677,14 @@
 			$('.' + plugin_name + '_container #' + plugin_name + '_toggle').prop('checked', false);
 			toggle_single_fiton(true);
 		});
+
+		//resizes content column dynamically when image column resizes in modal window
+		const img_block = document.querySelector('#' + plugin_name + '_modal .image-block');
+		const observe_img_resize = new ResizeObserver(() => {
+			$('#' + plugin_name + '_modal .upload-block').css('max-height', $('#' + plugin_name + '_modal .image-block').height() + 'px');
+			if (mediaStream != null) position_webcam_placeholder();
+		});
+		observe_img_resize.observe(img_block);
 
 		//dynamically place the fiton as the window+user image resizes (except for android)
 		if (!is_android && (plugin_config.responsive_positioning_in_pages || plugin_config.responsive_positioning_in_modal)) {

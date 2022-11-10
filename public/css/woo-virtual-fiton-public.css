@@ -20,6 +20,10 @@
   -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 
+.woo-virtual-fiton_container .upload-block-container {
+  padding: 30px;
+}
+
 .woo-virtual-fiton_container input[type="range"]  {
   width: 100%;
 }
@@ -61,10 +65,18 @@
   display: block;
 }
 
+.woo-virtual-fiton_container.webcam-on #woo-virtual-fiton_webcam_btn {
+  pointer-events: none;
+  opacity: 0.5;
+  background: gray;
+}
+
 .woo-virtual-fiton_container .webcam-block{
-  position: relative;
-  background: #cacaca8a;
-  padding: 10px 0;
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  left: 0;
+  padding: 5px 0;
 }
 
 /*.woo-virtual-fiton_container input[type='file'] {
@@ -210,27 +222,21 @@
 }
 
 #woo-virtual-fiton_modal .row {
+  display: grid;
+  grid-auto-flow: column;
   background: var(--secondary-color);
+  margin: 0;
 }
 
 #woo-virtual-fiton_modal .column {
-  float: left;
-  width: 50%;
-  padding: 30px;
   box-sizing: border-box;
+  min-height: 300px;
 }
 
 #woo-virtual-fiton_modal .column.image-block {
   padding: 0px;
-  margin-bottom: -9px;
   text-align: center;
-}
-
-#woo-virtual-fiton_modal .row:after {
-  content: "";
-  display: table;
-  clear: both;
-  box-sizing: border-box;
+  height: fit-content;
 }
 
 #woo-virtual-fiton_modal .column-sub-title {
@@ -344,13 +350,27 @@
 /* responsive */
 @media screen and (min-width: 1024px) {
   #woo-virtual-fiton_modal .column {
-    max-height: 500px;
     overflow-y: scroll;
   }
 }
 
 @media screen and (max-width: 1024px) {
-  #woo-virtual-fiton_modal .column {
+  #woo-virtual-fiton_modal.modal-window {
+    max-width: 60vw;
+  }
+
+  #woo-virtual-fiton_modal .row {
+    display: block;
+  }
+  .woo-virtual-fiton_container .webcam-block{
+    position: relative;
+    position: relative;
     width: 100%;
+    top: -70px;
+    margin-bottom: -70px;
+  }
+
+  #woo-virtual-fiton_placeholder_image {
+    top: 50px;
   }
 }
