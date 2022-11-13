@@ -164,31 +164,32 @@
 
 		//replace product image with user image
 		$(single_pimg_selector + ' a img')
-			.attr('src', user_img)
 			.attr('data-src', user_img)
 			.attr('data-large_image', user_img)
 			.attr('srcset', user_img)
 			.addClass(plugin_name + '_single_usr_img');
 
-		$(single_pimg_selector)
-			.css ({
-				'height': product_image_dimentions.height,
-				'width': product_image_dimentions.width,
-				'overflow': 'hidden'
-			});
+		$(single_pimg_selector + ' a img').attr('src', user_img).load(async function(){
+			$(single_pimg_selector)
+				.css ({
+					'height': product_image_dimentions.height,
+					'width': product_image_dimentions.width,
+					'overflow': 'hidden'
+				});
 
-		//destroy & remove any existing fiton elements (just in case)
-		if ($('.' + plugin_name + '_fiton_product').length) $('.' + plugin_name + '_fiton_product').remove();
+			//remove any existing fiton elements (just in case)
+			if ($('.' + plugin_name + '_fiton_product').length) $('.' + plugin_name + '_fiton_product').remove();
 
-		//get fiton image dimentions (only once)
-		if (!fiton_img_dimentions)fiton_img_dimentions = await get_image_dimentions(fiton_img);
+			//get fiton image dimentions (only once)
+			if (!fiton_img_dimentions)fiton_img_dimentions = await get_image_dimentions(fiton_img);
 
-		//change adjust button caption
-		$('#' + plugin_name + '_open_modal .caption').html('Ajuster');
+			//change adjust button caption
+			$('#' + plugin_name + '_open_modal .caption').html('Ajuster');
 
-		//prepend image
-		$(single_pimg_selector).prepend('<img class="' + plugin_name + '_fiton_product" src="' + fiton_img + '" style="display:none;">');
-		position_single_fiton();
+			//prepend image
+			$(single_pimg_selector).prepend('<img class="' + plugin_name + '_fiton_product" src="' + fiton_img + '" style="display:none;">');
+			position_single_fiton();
+		});
 	}
 
 	function position_single_fiton(){
@@ -233,40 +234,32 @@
 		$('#' + plugin_name + '_modal #' + plugin_name + '_preview_image').attr('data-fitoff-src', $('#' + plugin_name + '_modal #' + plugin_name + '_preview_image').attr('src'));
 
 		//replace product image with user image
-		$('#' + plugin_name + '_modal #' + plugin_name + '_preview_image').attr('src', user_img);
+		$('#' + plugin_name + '_modal #' + plugin_name + '_preview_image').attr('src', user_img).load(async function(){;
+			//remove any existing fiton elements (just in case)
+			if ($('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').length) $('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').remove();
 
-		//destroy & remove any existing fiton elements (just in case)
-		if ($('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').length) $('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').freetrans('destroy').remove();
+			//get fiton image dimentions (only once)
+			if (!fiton_img_dimentions) fiton_img_dimentions = await get_image_dimentions(fiton_img);
 
-		//get fiton image dimentions (only once)
-		if (!fiton_img_dimentions) fiton_img_dimentions = await get_image_dimentions(fiton_img);
+			//prepend image
+			$('#' + plugin_name + '_modal .image-block').prepend('<img id="' + plugin_name + '_fiton_product" src="' + fiton_img + '">');
 
-		//prepend image
-		$('#' + plugin_name + '_modal .image-block').prepend('<img id="' + plugin_name + '_fiton_product" src="' + fiton_img + '">');
-
-		$('#' + plugin_name + '_fiton_product').load(function(){
-			position_modal_fiton();
-
-			//disable editing
-			if (disable_edit) {
-				_disable_fiton_edit();
-			} else {
-				$('.' + plugin_name + '_container').removeClass('off_edit').addClass('on_edit');
-			}
+			$('#' + plugin_name + '_fiton_product').load(function(){
+				position_modal_fiton();
+				if (disable_edit) _disable_fiton_edit();
+				else $('.' + plugin_name + '_container').removeClass('off_edit').addClass('on_edit');
+			});
 		});
 	}
 
 	function position_modal_fiton(){
-		//@TODO : not perfectly responsive
 		user_image_dimentions = {width: $('#' + plugin_name + '_modal #' + plugin_name + '_preview_image').width(), height: $('.' + plugin_name + '_container #' + plugin_name + '_preview_image').height()};
 		let calculated_fiton_img_height = fiton_img_dimentions.height/(fiton_img_dimentions.width/user_image_dimentions.width);
 
 		/*console.log('~~~~~~~~~~~~~~~~~~~~~');
-		console.log('user_image_dimentions');
+		console.log('user_image_dimentions : ');
 		console.log(user_image_dimentions);
 		console.log('calculated_fiton_img_height : ' + calculated_fiton_img_height);
-		console.log('fiton_img_position');
-		console.log(fiton_img_position);
 		console.log('---------------------');*/
 
 		$('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product')
@@ -351,8 +344,8 @@
 				.attr('srcset', user_img)
 				.css('aspect-ratio', 'unset')
 				.addClass(plugin_name + '_shop_usr_img');
-
-			//destroy & remove any existing fiton elements (just in case)
+			
+			//remove any existing fiton elements (just in case)
 			if ($(this).find('.' + plugin_name + '_fiton_product').length) $(this).find('.' + plugin_name + '_fiton_product').remove();
 
 			//get fiton image dimentions
@@ -430,27 +423,22 @@
 		//save original preview image
 		$('#' + plugin_name + '_modal #' + plugin_name + '_preview_image').attr('data-fitoff-src', $('#' + plugin_name + '_modal #' + plugin_name + '_preview_image').attr('src'));
 
-		//replace preview image with user image
-		$('#' + plugin_name + '_modal #' + plugin_name + '_preview_image').attr('src', user_img);
+		//replace preview image with user image (and wait till it loads)
+		$('#' + plugin_name + '_modal #' + plugin_name + '_preview_image').attr('src', user_img).load(async function(){
+			//remove any existing fiton elements (just in case)
+			if ($('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').length) $('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').remove();
 
-		//destroy & remove any existing fiton elements (just in case)
-		if ($('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').length) $('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').freetrans('destroy').remove();
+			//get fiton image dimentions (only once)
+			if (!fiton_img_dimentions) fiton_img_dimentions = await get_image_dimentions(fiton_img);
 
-		//get fiton image dimentions (only once)
-		if (!fiton_img_dimentions) fiton_img_dimentions = await get_image_dimentions(fiton_img);
+			//prepend image
+			$('#' + plugin_name + '_modal .image-block').prepend('<img id="' + plugin_name + '_fiton_product" src="' + fiton_img + '">');
 
-		//prepend image
-		$('#' + plugin_name + '_modal .image-block').prepend('<img id="' + plugin_name + '_fiton_product" src="' + fiton_img + '">');
-
-		$('#' + plugin_name + '_fiton_product').load(function(){
-			position_modal_fiton();
-
-			//disable editing
-			if (disable_edit) {
-				_disable_fiton_edit();
-			} else {
-				$('.' + plugin_name + '_container').removeClass('off_edit').addClass('on_edit');
-			}
+			$('#' + plugin_name + '_fiton_product').load(function(){
+				position_modal_fiton();
+				if (disable_edit) _disable_fiton_edit();
+				else $('.' + plugin_name + '_container').removeClass('off_edit').addClass('on_edit');
+			});
 		});
 	}
 
@@ -478,60 +466,53 @@
 		}
 	}
 
-	//webcam (https://codepen.io/ocinpp/pen/EpbXKz)
-	async function get_media_stream (constraints) {
-		try {
-		  mediaStream =  await navigator.mediaDevices.getUserMedia(constraints);
-		  let video = document.getElementById(plugin_name + '_camera');    
-		  video.srcObject = mediaStream;
-		  video.onloadedmetadata = (event) => {
-			video.play();
-		  };
-		} catch (err)  {    
-		  console.error(err.message);   
-		}
-	};
+	//webcam 
+	//check if device have webcam hardware
+	function is_webcam_available(callback) {
+		let md = navigator.mediaDevices;
+		if (!md || !md.enumerateDevices) return callback(false);
+		md.enumerateDevices().then(devices => {
+			callback(devices.some(device => 'videoinput' === device.kind));
+		})
+	}
 	  
+	// stop the current video stream (if any)
+	function stop_media_stream () {
+		if (mediaStream != null && mediaStream.active) mediaStream.getVideoTracks().forEach(track => track.stop());
+	}
+
 	async function open_webcam () {  
-		try {
-		  $('.' + plugin_name + '_container').addClass('webcam-on');
-		  $('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image').hide();
-		  $('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').freetrans('destroy').remove();
+		stop_media_stream();
+		document.getElementById(plugin_name + '_camera').srcObject = null;
+		constraints.video.facingMode = webcam_env;
+		await navigator.mediaDevices.getUserMedia(constraints)
+			.then(function (stream) {
+				if (stream.getVideoTracks().length > 0){
+					mediaStream = stream;
 
-		  // stop the current video stream
-		  if (mediaStream != null && mediaStream.active) {
-			var tracks = mediaStream.getVideoTracks();
-			tracks.forEach(track => {
-			  track.stop();
-			})      
-		  }
-		  
-		  // set the video source to null
-		  document.getElementById(plugin_name + '_camera').srcObject = null;
-		  
-		  // change "facingMode"
-		  constraints.video.facingMode = webcam_env;
-		  
-		  // get new media stream
-		  await get_media_stream(constraints);
+					let video = document.getElementById(plugin_name + '_camera');    
+					video.srcObject = mediaStream;
+					video.onloadedmetadata = (event) => { video.play(); };
 
-		  var interval = setInterval(function() {
-			if (mediaStream != null) {
-			  position_webcam_placeholder()
-			  clearInterval(interval);
-			}
-		  }, 500);
+					$('.' + plugin_name + '_container').addClass('webcam-on');
+					$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image').hide();
+					$('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').freetrans('destroy').remove();
 
-		} catch (err)  {    
-		  console.error(err.message); 
-		  alert(err.message);
-		}
+					position_webcam_placeholder();
+					$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image').fadeIn();
+				} else {
+					alert('Webcam initiation failed. Please try again.');
+				}
+			})
+			.catch(function (error) { 
+				alert('You have to allow camera access in-order to use the webcam feature.');
+			});
 	}
 
 	function close_webcam () {
-		$('.' + plugin_name + '_container').removeClass('webcam-on');
-		if (mediaStream != null) mediaStream.getTracks().forEach(track => track.stop());
 		$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image').hide();
+		$('.' + plugin_name + '_container').removeClass('webcam-on');
+		stop_media_stream();
 	}
 
 	function toggle_webcam () {
@@ -556,7 +537,7 @@
 		  mediaStream = null;
 		  set_new_user_image(data);
 		} else {
-		  alert('capture failed. please try again');
+		  alert('Webcam capture failed. Please try again.');
 		}
 	}
 
@@ -564,12 +545,13 @@
 		if (mediaStream != null) {
 			$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image')
 			.css('height', $('#' + plugin_name + '_camera').height() + 'px')
-			.css('width', $('#' + plugin_name + '_camera').width() + 'px')
-			.fadeIn();
+			.css('width', $('#' + plugin_name + '_camera').width() + 'px');
 		}
 	}
 
 	$( window ).load(function() {
+		//show containers as page is now loaded
+		$('#woo-virtual-fiton_shop_modal, #woo-virtual-fiton_single_modal').fadeIn();
 
 		//read selected image file (with no upload to server)
 		if ($('#' + plugin_name + '_product_id').length || $('#' + plugin_name + '_shop').val() == 'true' || $('#' + plugin_name + '_shop').val() == '1') {
@@ -641,6 +623,9 @@
 
 		//setup model before model trigger
 		$('.' + plugin_name + '_container #' + plugin_name + '_open_modal').click( function() {
+			is_webcam_available(function(availability) {
+				if (availability) $('.' + plugin_name + '_container').addClass('webcam-found');
+			});
 			if (shop_page) set_shop_modal_fiton(false);
 			else set_single_modal_fiton(false);
 		});
@@ -682,7 +667,7 @@
 		const img_block = document.querySelector('#' + plugin_name + '_modal .image-block');
 		const observe_img_resize = new ResizeObserver(() => {
 			$('#' + plugin_name + '_modal .upload-block').css('max-height', $('#' + plugin_name + '_modal .image-block').height() + 'px');
-			if (mediaStream != null) position_webcam_placeholder();
+			position_webcam_placeholder();
 		});
 		observe_img_resize.observe(img_block);
 
@@ -693,6 +678,7 @@
 
 				//prevent iOS/Safari from firing window resize on scroll
 				if(win_width == $(window).width()) return false;
+				win_width = $(window).width();
 
 				if (plugin_config.responsive_positioning_in_pages && $('.' + plugin_name + '_fiton_product').length) {
 					if (shop_page) position_shop_fiton();
@@ -707,26 +693,5 @@
 				if ($('.' + plugin_name + '_container').hasClass('webcam-on')) position_webcam_placeholder();
 			});
 		}
-
-		//android only
-		/*if (is_android) {
-			var rotate_slider = document.getElementById(plugin_name + '_rotate_slider');
-			rotate_slider.oninput = function() {
-				$('#' + plugin_name + '_fiton_product').freetrans({
-					angle: this.value - 180
-				});
-			}
-	
-			var scale_slider = document.getElementById(plugin_name + '_scale_slider');
-			scale_slider.oninput = function() {
-					$('#' + plugin_name + '_fiton_product').freetrans({
-						scalex: this.value,
-						scaley: this.value
-					});
-			}
-
-			$('.' + plugin_name + '_container').addClass('android-on');
-		}*/
-
 	});
 })( jQuery );
