@@ -505,7 +505,10 @@
 				}
 			})
 			.catch(function (error) { 
-				alert('You have to allow camera access in-order to use the webcam feature.');
+				is_webcam_available(function(availability) {
+					if (availability) alert('Please allow camera access in-order to use the webcam feature.');
+					else alert('Webcam initiation failed. Please reload the page & try again.');
+				});
 			});
 	}
 
@@ -545,7 +548,8 @@
 		if (mediaStream != null) {
 			$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image')
 			.css('height', $('#' + plugin_name + '_camera').height() + 'px')
-			.css('width', $('#' + plugin_name + '_camera').width() + 'px');
+			.css('width', $('#' + plugin_name + '_camera').width() + 'px')
+			.css('top', $('#' + plugin_name + '_modal .header-block').outerHeight() + 'px');
 		}
 	}
 
@@ -625,6 +629,7 @@
 		$('.' + plugin_name + '_container #' + plugin_name + '_open_modal').click( function() {
 			is_webcam_available(function(availability) {
 				if (availability) $('.' + plugin_name + '_container').addClass('webcam-found');
+				else $('.' + plugin_name + '_container').removeClass('webcam-found');
 			});
 			if (shop_page) set_shop_modal_fiton(false);
 			else set_single_modal_fiton(false);
