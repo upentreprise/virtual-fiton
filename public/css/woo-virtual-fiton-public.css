@@ -345,23 +345,16 @@
   border-radius: 50%;
 }
 
-/* responsive */
-@media screen and (min-width: 1024px) {
-  #woo-virtual-fiton_modal .column {
-    overflow-y: scroll;
-  }
+#woo-virtual-fiton_modal .column {
+  overflow-y: scroll;
 }
 
-@media screen and (max-width: 1024px) {
-  #woo-virtual-fiton_modal.modal-window {
-    max-width: 60vw;
-  }
-
+/* responsive */
+@media only screen and (max-width: 1024px) {
   #woo-virtual-fiton_modal .row {
     display: block;
   }
   .woo-virtual-fiton_container .webcam-block{
-    position: relative;
     position: relative;
     width: 100%;
     top: -70px;
@@ -370,5 +363,19 @@
 
   #woo-virtual-fiton_placeholder_image {
     top: 59px;
+  }
+}
+
+/* mobile */
+@media only screen and (min-device-width: 480px) {
+  #woo-virtual-fiton_placeholder_image {
+    top: 31px;
+  }
+}
+
+/* tablet */
+@media only screen and (min-device-width: 700px) {
+  #woo-virtual-fiton_modal.modal-window {
+    max-width: 60vw;
   }
 }
