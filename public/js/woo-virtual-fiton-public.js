@@ -497,6 +497,7 @@
 					$('.' + plugin_name + '_container').addClass('webcam-on');
 					$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image').hide();
 					$('#' + plugin_name + '_modal #' + plugin_name + '_fiton_product').freetrans('destroy').remove();
+					$('#' + plugin_name + '_modal .ft-container').remove();
 
 					position_webcam_placeholder();
 					$('#' + plugin_name + '_modal #' + plugin_name + '_placeholder_image').fadeIn();
