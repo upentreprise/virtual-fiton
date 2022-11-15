@@ -310,8 +310,8 @@
   overflow-y: scroll;
 }
 
-/* responsive */
-@media only screen and (max-width: 1024px) {
+/* mobile */
+@media only screen and (max-width: 699px)  {
   #woo-virtual-fiton_modal .row {
     display: block;
   }
@@ -323,14 +323,26 @@
   }
 }
 
-/* mobile */
-@media only screen and (min-device-width: 480px) {
-
-}
-
 /* tablet */
-@media only screen and (min-device-width: 700px) {
+@media only screen and (min-device-width: 700px) and (max-width: 1024px) {
   #woo-virtual-fiton_modal.modal-window {
     max-width: 80vw;
+  }
+
+  #woo-virtual-fiton_modal .row {
+    display: block;
+  }
+  .woo-virtual-fiton_container .webcam-block{
+    position: relative;
+    width: 100%;
+    top: -70px;
+    margin-bottom: -70px;
+  }
+}
+
+/* desktop */
+@media only screen and (min-device-width: 1025px) {
+  #woo-virtual-fiton_placeholder_image {
+    object-fit: contain;
   }
 }
