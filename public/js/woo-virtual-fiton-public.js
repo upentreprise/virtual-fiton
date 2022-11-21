@@ -58,6 +58,9 @@
 		} else if (shop_page) {
 			await set_shop_modal_fiton(false);
 		}
+
+		//change adjust button caption
+		$('#' + plugin_name + '_open_modal .caption').html('Essayer une autre photo');
 	}
 
 	function save_user_image(img) {
@@ -148,6 +151,9 @@
 		//get user image, if not found we do not continue
 		let user_img = get_user_image();
 		if (!user_img) return false;
+
+		//change adjust button caption
+		$('#' + plugin_name + '_open_modal .caption').html('Essayer une autre photo');
 		
 		//toggle
 		$('.' + plugin_name + '_container #' + plugin_name + '_toggle').prop('checked', true);
@@ -184,7 +190,7 @@
 			if (!fiton_img_dimentions)fiton_img_dimentions = await get_image_dimentions(fiton_img);
 
 			//change adjust button caption
-			$('#' + plugin_name + '_open_modal .caption').html('Ajuster');
+			$('#' + plugin_name + '_open_modal .caption').html('Essayer une autre photo');
 
 			//prepend image
 			$(single_pimg_selector).prepend('<img class="' + plugin_name + '_fiton_product" src="' + fiton_img + '" style="display:none;">');
@@ -320,6 +326,9 @@
 		//get user image, if not found we do not continue
 		var user_img = get_user_image();
 		if (!user_img) return false;
+
+		//change adjust button caption
+		$('#' + plugin_name + '_open_modal .caption').html('Essayer une autre photo');
 
 		var container_dimentions = false;
 		if (revert_imgs) _revert_shop_product_images();
