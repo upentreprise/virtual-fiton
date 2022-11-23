@@ -25,6 +25,7 @@
 	}; 
 	var user_agent = navigator.userAgent.toLowerCase();
 	var is_android = user_agent.indexOf("android") > -1;
+	var first_fiton = false;
 
 	//global methods
 	function get_image_meta(url) {
@@ -60,7 +61,7 @@
 		}
 
 		//change adjust button caption
-		$('#' + plugin_name + '_open_modal .caption').html('Essayer une autre photo');
+		$('#' + plugin_name + '_open_modal .caption').html('Ajuster/Changer la photo');
 	}
 
 	function save_user_image(img) {
@@ -153,7 +154,7 @@
 		if (!user_img) return false;
 
 		//change adjust button caption
-		$('#' + plugin_name + '_open_modal .caption').html('Essayer une autre photo');
+		$('#' + plugin_name + '_open_modal .caption').html('Ajuster/Changer la photo');
 		
 		//toggle
 		$('.' + plugin_name + '_container #' + plugin_name + '_toggle').prop('checked', true);
@@ -190,7 +191,7 @@
 			if (!fiton_img_dimentions)fiton_img_dimentions = await get_image_dimentions(fiton_img);
 
 			//change adjust button caption
-			$('#' + plugin_name + '_open_modal .caption').html('Essayer une autre photo');
+			$('#' + plugin_name + '_open_modal .caption').html('Ajuster/Changer la photo');
 
 			//prepend image
 			$(single_pimg_selector).prepend('<img class="' + plugin_name + '_fiton_product" src="' + fiton_img + '" style="display:none;">');
@@ -328,7 +329,7 @@
 		if (!user_img) return false;
 
 		//change adjust button caption
-		$('#' + plugin_name + '_open_modal .caption').html('Essayer une autre photo');
+		$('#' + plugin_name + '_open_modal .caption').html('Ajuster/Changer la photo');
 
 		var container_dimentions = false;
 		if (revert_imgs) _revert_shop_product_images();
@@ -564,6 +565,7 @@
 	}
 
 	$( window ).load(function() {
+		if (!get_user_image()) first_fiton = true;
 		//show containers as page is now loaded
 		$('#woo-virtual-fiton_shop_modal, #woo-virtual-fiton_single_modal').fadeIn();
 
@@ -617,12 +619,18 @@
 		
 		//fiton save btn
 		$('.' + plugin_name + '_container #' + plugin_name + '_save_btn').click( function() {
+			console.log(first_fiton);
 			set_fiton_position(product_id);
 			_disable_fiton_edit();
 			$.magnificPopup.close();
 
 			if (shop_page) set_shop_fiton();
 			else set_single_fiton();
+			
+			if (first_fiton) {
+				$('#awb-oc-2396').addClass('awb-show');
+				first_fiton = false;
+			}
 		});
 
 		//fiton edit btn
